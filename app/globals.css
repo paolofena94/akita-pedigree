@@ -4,12 +4,98 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer base {
+  :root {
+    --background: 30 20% 97%;
+    --foreground: 20 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 10%;
+    --primary: 20 80% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 10% 90%;
+    --secondary-foreground: 20 10% 20%;
+    --muted: 30 10% 92%;
+    --muted-foreground: 20 10% 40%;
+    --accent: 20 80% 95%;
+    --accent-foreground: 20 80% 30%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 85%;
+    --input: 30 10% 85%;
+    --ring: 20 80% 45%;
+    --radius: 1.5rem;
+  }
+
+  .dark {
+    --background: 20 10% 5%;
+    --foreground: 0 0% 95%;
+    --card: 20 10% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 20 10% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 20 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 20 10% 15%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 20 10% 15%;
+    --muted-foreground: 20 10% 60%;
+    --accent: 20 80% 15%;
+    --accent-foreground: 20 80% 80%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 20 10% 20%;
+    --input: 20 10% 20%;
+    --ring: 20 80% 50%;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-modern {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 10px 15px -3px rgba(217, 83, 10, 0.2);
+  }
+
+  .btn-modern:hover {
+    transform: scale(1.05);
+  }
+}
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +125,8 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -115,16 +203,4 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
 }
