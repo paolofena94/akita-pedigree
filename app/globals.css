@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  /* Registriamo i colori nel motore di Tailwind v4 */
+
+  --font-sans: var(--font-nunito);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   
@@ -27,7 +30,6 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
 
-  /* Registriamo i raggi di curvatura */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -35,7 +37,6 @@
 
 @layer base {
   :root {
-    /* Tavolozza Akita Warm */
     --background: 30 20% 97%;
     --foreground: 20 10% 10%;
     

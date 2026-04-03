@@ -25,7 +25,7 @@ export default function ThemeTestPage() {
         <div className="grid gap-8 md:grid-cols-2">
           
           {/* Sezione Bottoni */}
-          <section className="space-y-4 rounded-[2rem] border bg-card p-8 shadow-sm">
+          <section className="space-y-4 rounded-4xl border bg-card p-8 shadow-sm">
             <h2 className="border-b pb-2 text-2xl font-semibold">1. Bottoni Shadcn & Custom</h2>
             <div className="flex flex-wrap items-center gap-4 pt-4">
               {/* Test delle varianti di Shadcn */}
@@ -39,7 +39,7 @@ export default function ThemeTestPage() {
           </section>
 
           {/* Sezione Tipografia e Colori */}
-          <section className="space-y-4 rounded-[2rem] border bg-card p-8 shadow-sm">
+          <section className="space-y-4 rounded-4xl border bg-card p-8 shadow-sm">
             <h2 className="border-b pb-2 text-2xl font-semibold">2. Tipografia & Colori</h2>
             <div className="space-y-2 pt-4">
               <p className="text-base">Questo è il testo standard (Foreground).</p>
@@ -73,10 +73,10 @@ export default function ThemeTestPage() {
           {/* Sezione Glassmorphism */}
           <section className="space-y-4">
             <h2 className="px-2 text-2xl font-semibold">4. Effetto Vetro (Custom)</h2>
-            <div className="relative flex min-h-[220px] w-full items-center justify-center rounded-[2rem] bg-gradient-to-br from-secondary to-primary p-8 shadow-inner">
+            <div className="relative flex min-h-55 w-full items-center justify-center rounded-4xl bg-linear-to-br from-secondary to-primary p-8 shadow-inner">
               
               {/* Test della classe glass-card */}
-              <div className="glass-card max-w-[250px] rounded-2xl p-6 text-center">
+              <div className="glass-card max-w-62.5 rounded-2xl p-6 text-center">
                 <p className="font-bold text-gray-900">Glass Card</p>
                 <p className="mt-1 text-xs text-gray-800">
                   Sfondo semitrasparente con blur applicato al livello sottostante.
