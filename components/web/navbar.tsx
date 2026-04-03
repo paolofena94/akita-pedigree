@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { menuEntries } from "@/config/navigation";
 import { NavDropdownCategory } from "./dropdown-menu";
 
-export function Navbar(){
+export function Navbar () {
     return (
         <nav className="top-0 z-50 w-full">
             <div className="flex h-20 max-w-10xl items-center justify-between px-6 my-3">
@@ -30,8 +30,8 @@ export function Navbar(){
                         ))}
 
                         <NavigationMenuItem>
-                            <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "p-5 text-2xl hover:bg-transparent")}>
-                                <Link href="/docs">Docs</Link>
+                            <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "p-5 text-2xl font-semibold hover:bg-transparent")}>
+                                <Link href="/about">About</Link>
                             </NavigationMenuLink>
                         </NavigationMenuItem>
 

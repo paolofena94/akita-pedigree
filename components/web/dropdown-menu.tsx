@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 export function NavDropdownCategory({ title, items }: MenuEntry) {
   return (
     <NavigationMenuItem className="gap-5">
-      <NavigationMenuTrigger className="p-5 text-2xl font-bold bg-transparent hover:bg-transparent data-[state=open]:bg-transparent hover:text-primary data-[state=open]:text-primary focus:bg-transparent">
+      <NavigationMenuTrigger className="p-5 text-2xl font-semibold bg-transparent hover:bg-transparent data-[state=open]:bg-transparent hover:text-primary data-[state=open]:text-primary focus:bg-transparent">
         {title}
       </NavigationMenuTrigger>
 
