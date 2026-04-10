@@ -12,48 +12,52 @@ import { cn } from "@/lib/utils";
 import { menuEntries } from "@/config/navigation";
 import { NavDropdownCategory } from "./dropdown-menu";
 
-export function Navbar () {
-    return (
-        <nav className="top-0 z-50 w-full">
-            <div className="flex h-20 max-w-10xl items-center justify-between px-6 my-3">
-                <BrandLogo/>
+export function Navbar() {
+  return (
+    <nav aria-label="Main" className="top-0 z-50 w-full">
+      <div className="flex items-center justify-between mx-auto bg-background h-20 max-w-8xl px-6 my-3">
+        <BrandLogo />
 
-                <NavigationMenu>
-                    <NavigationMenuList>
+        <NavigationMenu>
+          <NavigationMenuList>
 
-                        {menuEntries.map((menu) => (
-                            <NavDropdownCategory
-                                key={menu.title}
-                                title={menu.title}
-                                items={menu.items}
-                            />
-                        ))}
+            {menuEntries.map((menu) => (
+              <NavDropdownCategory
+                key={menu.title}
+                title={menu.title}
+                items={menu.items}
+              />
+            ))}
 
-                        <NavigationMenuItem>
-                            <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "p-5 text-2xl font-semibold hover:bg-transparent")}>
-                                <Link href="/about">About</Link>
-                            </NavigationMenuLink>
-                        </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "p-5 text-xl font-semibold hover:bg-transparent")}>
+                <Link href="/about">About</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-                    </NavigationMenuList>
-                </NavigationMenu>
+          </NavigationMenuList>
+        </NavigationMenu>
 
-                <div className="flex items-center gap-3">
-                    <Button variant="ghost" className="p-5 text-xl">Login</Button>
-                    <Button className="p-5 text-xl hover:bg-primary/80">Sign Up</Button>
-                </div>
-            </div>
-        </nav>
-    )
+        <div className="flex items-center gap-3">
+          <Button asChild variant="ghost" size="lg" className="p-3 text-md font-semibold transition-all duration-200 active:scale-95">
+            <Link href="/login">Login</Link>
+          </Button>
+          <Button asChild size="lg" className="p-3 text-md font-semibold transition-all duration-200 hover:brightness-110 active:scale-95">
+            <Link href="/signup">Sign Up</Link>
+          </Button>
+        </div>
+      </div>
+    </nav>
+  )
 }
 
 function BrandLogo() {
   return (
-    <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
+    <Link href="/" aria-label="Go to Akita Pedigree homepage" className="flex items-center gap-3">
       <div className="relative flex h-16 w-16 items-center justify-center">
         <Image
           src="/icon.png"
-          alt="Muso Akita Logo"
+          alt="Akita Pedigree Logo"
           fill
           priority
           sizes="72px"
@@ -61,13 +65,13 @@ function BrandLogo() {
         />
       </div>
 
-      <div className="flex flex-col justify-center text-left leading-none">
-        <h1 className="text-3xl font-extrabold tracking-tight text-primary">
+      <div className="flex flex-col justify-center text-left leading-none" aria-hidden="true">
+        <span className="text-3xl font-extrabold tracking-tight text-primary">
           Akita
-        </h1>
-        <h1 className="-mt-2 text-2xl font-extrabold tracking-tight text-foreground">
+        </span>
+        <span className="-mt-2 text-2xl font-extrabold tracking-tight text-foreground">
           Pedigree
-        </h1>
+        </span>
       </div>
     </Link>
   )

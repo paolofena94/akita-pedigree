@@ -27,9 +27,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${nunito.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-dvh flex flex-col">
+      <body className="font-sans min-h-screen flex flex-col">
         
         <Navbar />
         
