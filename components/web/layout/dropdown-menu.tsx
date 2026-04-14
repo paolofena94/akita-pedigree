@@ -1,7 +1,7 @@
 "use client"
 
+import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { MenuEntry, MenuItem } from "@/config/navigation";
-import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "../ui/navigation-menu";
 import { ArrowRight } from "lucide-react";
 
 

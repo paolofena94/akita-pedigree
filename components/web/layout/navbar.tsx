@@ -7,15 +7,15 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { menuEntries } from "@/config/navigation";
 import { NavDropdownCategory } from "./dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   return (
     <nav aria-label="Main" className="top-0 z-50 w-full">
-      <div className="flex items-center justify-between mx-auto bg-background h-20 max-w-8xl px-6 my-3">
+      <div className="flex items-center justify-between mx-auto bg-background max-w-8xl px-6 py-3 shadow-md">
         <BrandLogo />
 
         <NavigationMenu>
@@ -54,7 +54,7 @@ export function Navbar() {
 function BrandLogo() {
   return (
     <Link href="/" aria-label="Go to Akita Pedigree homepage" className="flex items-center gap-3">
-      <div className="relative flex h-16 w-16 items-center justify-center">
+      <div className="relative flex h-14 w-14 items-center justify-center">
         <Image
           src="/icon.png"
           alt="Akita Pedigree Logo"
@@ -66,10 +66,10 @@ function BrandLogo() {
       </div>
 
       <div className="flex flex-col justify-center text-left leading-none" aria-hidden="true">
-        <span className="text-3xl font-extrabold tracking-tight text-primary">
+        <span className="text-2xl font-extrabold tracking-tight text-primary">
           Akita
         </span>
-        <span className="-mt-2 text-2xl font-extrabold tracking-tight text-foreground">
+        <span className="-mt-2 text-xl font-extrabold tracking-tight text-foreground">
           Pedigree
         </span>
       </div>

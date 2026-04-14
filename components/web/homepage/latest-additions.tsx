@@ -3,11 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Calendar, Clock, HouseHeart, ShieldUser } from "lucide-react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../ui/carousel";
 import React from "react";
-import { Button } from "../ui/button";
-import { GiBarn } from "react-icons/gi";
+import { Button } from "../../ui/button";
 
 const isoFlagMap: Record<string, string> = {
   "Japan": "jp",
@@ -22,11 +20,10 @@ const isoFlagMap: Record<string, string> = {
 export type RecentAkita = {
   id: string;
   name: string;
-  registration: string; // Utile per il database, anche se nascosto nella card
   country: string;
   birthYear: string;
   image: string;
-  sex: "male" | "female"; // Usiamo i letterali per maggiore sicurezza
+  sex: "male" | "female";
   color: "Red" | "White" | "Brindle" | "Sesame";
   kennel?: string;
   breeder?: string;
@@ -36,7 +33,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "1",
     name: "Kenjiro Go Shirai",
-    registration: "AKI 24/5678",
     country: "Japan",
     birthYear: "2023",
     image: "/images/kashi.jpg",
@@ -47,7 +43,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "2",
     name: "Hachiko Lineage Kuma",
-    registration: "ROI 22/10984",
     country: "Italy",
     birthYear: "2022",
     image: "/images/miharashi.jpg",
@@ -58,7 +53,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "3",
     name: "Sakura No Tenshi",
-    registration: "AKC WS78901",
     country: "USA",
     birthYear: "2024",
     image: "/images/akita-hero-1.jpg",
@@ -70,7 +64,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "4",
     name: "Taro Tora Go",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -80,7 +73,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "5",
     name: "Yuki No Hana",
-    registration: "FCI 123/24",
     country: "Japan",
     birthYear: "2024",
     image: "/images/akita-puppy.jpg",
@@ -91,7 +83,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "6",
     name: "Kuro Go",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -102,7 +93,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "7",
     name: "Taro Tora Go",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -112,7 +102,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "8",
     name: "Lumiere Stella",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -123,7 +112,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "9",
     name: "Taro Tora Go",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -133,7 +121,6 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "10",
     name: "Marie's Pride",
-    registration: "FCI 345/23",
     country: "France",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
@@ -194,7 +181,6 @@ export function LatestAdd() {
           <CarouselContent className="-ml-4 py-4">
 
             {recentAkita.map((dog) => (
-              // QUI IMPOSTIAMO LA RESPONSIVITÀ (QUANTE CARD MOSTRARE)
               // basis-full = 1 su mobile, md:basis-1/2 = 2 su tablet, lg:basis-1/4 = 4 su desktop
               <CarouselItem key={dog.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
                 <AkitaCard {...dog} />
@@ -205,11 +191,11 @@ export function LatestAdd() {
 
           {/* Frecce Opzionali su mobile*/}
           {isMounted && (
-            <div className="block">
+            <div>
               <CarouselPrevious variant="default"
-                className="-left-10 h-6 w-6 md:h-10 md:w-10 md:-left-14 bg-background text-primary hover:bg-primary/10 hover:text-primary [&_svg]:stroke-[3px] [&_svg]:w-6! [&_svg]:h-6! md:[&_svg]:w-8! md:[&_svg]:h-8!" />
+                className="-left-10 h-6 w-6 md:h-10 md:w-10 md:-left-14 bg-background text-primary transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-primary-foreground active:scale-90 [&_svg]:stroke-[3px] [&_svg]:w-4! [&_svg]:h-4! md:[&_svg]:w-6! md:[&_svg]:h-6!" />
               <CarouselNext variant="default"
-                className="-right-10 h-6 w-6 md:h-10 md:w-10 md:-right-14 bg-background text-primary hover:bg-primary/10 hover:text-primary [&_svg]:stroke-[3px] [&_svg]:w-6! [&_svg]:h-6! md:[&_svg]:w-8! md:[&_svg]:h-8!" />
+                className="-right-10 h-6 w-6 md:h-10 md:w-10 md:-right-14 bg-background text-primary transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-primary-foreground active:scale-90 [&_svg]:stroke-[3px] [&_svg]:w-4! [&_svg]:h-4! md:[&_svg]:w-6! md:[&_svg]:h-6!" />
             </div>
           )}
         </Carousel>

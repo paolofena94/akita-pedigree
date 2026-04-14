@@ -1,10 +1,10 @@
-import ContributeBanner from "@/components/web/contribute-banner";
-import DonationBanner from "@/components/web/donation-banner";
-import FeatureCards from "@/components/web/feature-card";
-import { HeroSection } from "@/components/web/hero";
-import { LatestAdd } from "@/components/web/latest-additions";
-import { StatsSection } from "@/components/web/stats";
-import TopContributors from "@/components/web/top-contributors";
+import ContributeBanner from "@/components/web/shared/contribute-banner";
+import DonationBanner from "@/components/web/shared/donation-banner";
+import FeatureCards from "@/components/web/shared/feature-card";
+import { LatestAdd } from "@/components/web/homepage/latest-additions";
+import { StatsSection } from "@/components/web/homepage/stats";
+import TopContributors from "@/components/web/homepage/top-contributors";
+import { HeroSection } from "@/components/web/homepage/hero";
 
 
 {/*TO-DO:
@@ -21,7 +21,7 @@ export default function Home() {
     <div>
       <HeroSection />
 
-      <div className="p-12 lg:p-24 flex flex-col justify-center gap-24">
+      <div className="p-12 lg:p-24 flex flex-col justify-center gap-18">
         <StatsSection />
         <LatestAdd />
 
