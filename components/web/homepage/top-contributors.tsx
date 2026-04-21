@@ -1,22 +1,12 @@
 import Link from "next/link";
 import { Trophy, Award, ArrowRight } from "lucide-react";
-
-// Mappa dei codici ISO
-const isoFlagMap: Record<string, string> = {
-  "Japan": "jp",
-  "Italy": "it",
-  "USA": "us",
-  "France": "fr",
-  "Germany": "de",
-  "Spain": "es",
-  "UK": "gb",
-};
+import { getCountryName, getFlagEmoji } from "@/lib/nations";
 
 export default function TopContributors() {
   const contributors = [
-    { name: "Shirai Kensha", dogs: 142, country: "Japan", rank: 1, color: "text-yellow-500", bg: "bg-yellow-100/50" },
-    { name: "Giovanni F.", dogs: 89, country: "Italy", rank: 2, color: "text-slate-400", bg: "bg-slate-100" },
-    { name: "Tenshi Akitas", dogs: 64, country: "USA", rank: 3, color: "text-amber-700", bg: "bg-amber-100/50" },
+    { name: "Shirai Kensha", dogs: 142, country: "JP", rank: 1, color: "text-yellow-500", bg: "bg-yellow-100/50" },
+    { name: "Giovanni F.", dogs: 89, country: "IT", rank: 2, color: "text-slate-400", bg: "bg-slate-100" },
+    { name: "Tenshi Akitas", dogs: 64, country: "US", rank: 3, color: "text-amber-700", bg: "bg-amber-100/50" },
   ];
 
   return (
@@ -55,12 +45,17 @@ export default function TopContributors() {
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium mt-0.5">
-                  <img
-                    src={`https://flagcdn.com/${isoFlagMap[user.country]}.svg`}
-                    alt={`${user.country} flag`}
-                    className="w-4 h-3 object-cover rounded-[2px] shadow-md"
-                    loading="lazy"
-                  />
+                  {user.country && (
+                    <span
+                      className="text-sm leading-none shrink-0"
+                      role="img"
+                      aria-label={`${getCountryName(user.country)} flag`}
+                    >
+                      {getFlagEmoji(user.country)}
+                    </span>
+                  )}
+                  {/* Mostriamo il pallino separatore solo se c'è la nazione, per non averlo all'inizio */}
+                  <span>{user.country ? "• " : ""}{user.dogs} akitas added</span>
                   <span>• {user.dogs} akitas added</span>
                 </div>
               </div>

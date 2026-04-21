@@ -10,7 +10,6 @@ import { AwardColor, AwardIcon } from "@/app/types/akita";
 
 /**
  * Mappa delle icone Lucide per la sezione Awards.
- * Associa la stringa salvata nel database al componente React corrispondente.
  */
 export const AWARD_ICON_MAP: Record<AwardIcon, LucideIcon> = {
   trophy: Trophy,
@@ -21,14 +20,43 @@ export const AWARD_ICON_MAP: Record<AwardIcon, LucideIcon> = {
 };
 
 /**
- * Mappa dei colori per gli Awards.
- * A differenza della salute, qui usiamo solo classi di testo (senza background)
- * per mantenere un design più leggero e prestigioso.
+ * Mappa dei colori potenziata per gli Awards.
+ * Ogni tonalità definisce lo stile per il contenitore, l'icona e il label.
  */
-export const AWARD_COLOR_MAP: Record<AwardColor, string> = {
-  gold: "text-amber-500",    // Effetto Oro per campionati
-  silver: "text-slate-400",  // Effetto Argento
-  bronze: "text-orange-700", // Effetto Bronzo
-  blue: "text-blue-600",     // Primo posto / Best of Breed
-  red: "text-red-600",       // Specialty / Risultati di rilievo
+export const AWARD_COLOR_MAP: Record<AwardColor, { 
+  bg: string; 
+  border: string; 
+  text: string; 
+  label: string; 
+}> = {
+  gold: {
+    bg: "bg-amber-50",
+    border: "border-amber-100",
+    text: "text-amber-500",
+    label: "text-amber-700/70",
+  },
+  silver: {
+    bg: "bg-slate-50",
+    border: "border-slate-200",
+    text: "text-slate-400",
+    label: "text-slate-500/70",
+  },
+  bronze: {
+    bg: "bg-orange-50",
+    border: "border-orange-100",
+    text: "text-orange-600",
+    label: "text-orange-700/70",
+  },
+  blue: {
+    bg: "bg-blue-50",
+    border: "border-blue-100",
+    text: "text-blue-500",
+    label: "text-blue-700/70",
+  },
+  red: {
+    bg: "bg-rose-50",
+    border: "border-rose-100",
+    text: "text-rose-500",
+    label: "text-rose-700/70",
+  },
 };

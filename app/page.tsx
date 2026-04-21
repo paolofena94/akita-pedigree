@@ -8,10 +8,10 @@ import { HeroSection } from "@/components/web/homepage/hero";
 
 
 {/*TO-DO:
-  NAVBAR: Hamburger Menu for mobile
+  NAVBAR: Hamburger Menu for mobile, modificare navigation.ts per poter inserire About come voce senza sottomenu
   HERO: implement search engine
   STATS: -
-  LATESTADDITIONS: Fix Carousel's arrows, implement link to dogs
+  LATESTADDITIONS: implement link to dogs
   CONTRIBUTE & TOP: implement link to profile
   TOOLS: -
   DONATION: implement link to donation
@@ -25,13 +25,13 @@ export default function Home() {
         <StatsSection />
         <LatestAdd />
 
-        <div className="my-14 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="my-14 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          <div className="lg:col-span-2">
+          <div>
             <ContributeBanner />
           </div>
 
-          <div className="lg:col-span-1">
+          <div>
             <TopContributors />
           </div>
 

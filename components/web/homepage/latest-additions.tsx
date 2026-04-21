@@ -6,16 +6,7 @@ import { ArrowRight, MapPin, Calendar, Clock, HouseHeart, ShieldUser } from "luc
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../ui/carousel";
 import React from "react";
 import { Button } from "../../ui/button";
-
-const isoFlagMap: Record<string, string> = {
-  "Japan": "jp",
-  "Italy": "it",
-  "USA": "us",
-  "France": "fr",
-  "Germany": "de",
-  "Spain": "es",
-  "UK": "gb",
-};
+import { getCountryName, getFlagEmoji } from "@/lib/nations";
 
 export type RecentAkita = {
   id: string;
@@ -33,7 +24,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "1",
     name: "Kenjiro Go Shirai",
-    country: "Japan",
+    country: "JP",
     birthYear: "2023",
     image: "/images/kashi.jpg",
     sex: "male",
@@ -43,7 +34,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "2",
     name: "Hachiko Lineage Kuma",
-    country: "Italy",
+    country: "IT",
     birthYear: "2022",
     image: "/images/miharashi.jpg",
     sex: "male",
@@ -53,7 +44,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "3",
     name: "Sakura No Tenshi",
-    country: "USA",
+    country: "US",
     birthYear: "2024",
     image: "/images/akita-hero-1.jpg",
     sex: "female",
@@ -64,7 +55,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "4",
     name: "Taro Tora Go",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "male",
@@ -73,7 +64,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "5",
     name: "Yuki No Hana",
-    country: "Japan",
+    country: "JP",
     birthYear: "2024",
     image: "/images/akita-puppy.jpg",
     sex: "female",
@@ -83,7 +74,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "6",
     name: "Kuro Go",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "female",
@@ -93,16 +84,16 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "7",
     name: "Taro Tora Go",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "male",
-    color: "Sesame", // Esempio del rarissimo Sesamo
+    color: "Sesame",
   },
   {
     id: "8",
     name: "Lumiere Stella",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "female",
@@ -112,7 +103,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "9",
     name: "Taro Tora Go",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "male",
@@ -121,7 +112,7 @@ export const recentAkita: RecentAkita[] = [
   {
     id: "10",
     name: "Marie's Pride",
-    country: "France",
+    country: "FR",
     birthYear: "2021",
     image: "/images/akita-puppy.jpg",
     sex: "female",
@@ -226,6 +217,7 @@ function AkitaCard({
   kennel,
   breeder
 }: RecentAkita) {
+  const isoCode = country;
   return (
     <div className="p-1 h-full">
       <div className="group relative h-full flex flex-col rounded-2xl border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-500 ease-out hover:-translate-y-2 overflow-hidden">
@@ -285,18 +277,14 @@ function AkitaCard({
             {/* RIGA 2: Country (SX) - Birth Year (DX) */}
             <div className="my-4 flex items-center justify-between gap-2 border-t pt-3">
               <div className="flex items-center gap-2 min-w-0">
-                {isoFlagMap[country] ? (
-                  <img
-                    src={`https://flagcdn.com/w20/${isoFlagMap[country]}.png`}
-                    srcSet={`https://flagcdn.com/w40/${isoFlagMap[country]}.png 2x`}
-                    width="20"
-                    alt={country}
-                    className="h-2.5 w-auto rounded-[2px] shrink-0 shadow-xs"
-                  />
+                {isoCode ? (
+                  <span className="text-base leading-none shrink-0" role="img" aria-label={isoCode}>
+                    {getFlagEmoji(isoCode)}
+                  </span>
                 ) : (
                   <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
                 )}
-                <span className="truncate">{country}</span>
+                <span className="truncate">{getCountryName(country)}</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Calendar className="h-4 w-4 shrink-0" />
@@ -308,13 +296,13 @@ function AkitaCard({
             {/* RIGA 3 (Opzionale): Kennel o Breeder */}
             {(kennel || breeder) && (
               <div className="pb-2 flex justify-center items-center text-xs gap-2 min-w-0">
-                
+
                 {kennel ? (
                   <HouseHeart className="h-3 w-3 shrink-0" />
                 ) : (
                   <ShieldUser className="h-3 w-3 shrink-0" />
                 )}
-                
+
                 <span className="truncate" title={kennel || breeder}>
                   {kennel || breeder}
                 </span>

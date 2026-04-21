@@ -117,7 +117,7 @@ export function HeroDetails() {
                             {/* Call Name */}
                             <div className="pt-1">
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Call Name</p>
-                                <p className="font-bold text-sm text-foreground uppercase tracking-wide">Mishi</p>
+                                <p className="font-bold text-sm text-foreground tracking-wide">Mishi</p>
                             </div>
 
                             {/* Date of Birth e Date of Death affiancati (SENZA BORDINO) */}

@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   return (
-    <nav aria-label="Main" className="top-0 z-50 w-full">
-      <div className="flex items-center justify-between mx-auto bg-background max-w-8xl px-6 py-3 shadow-md">
+    <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b border-slate-200">
+      <div className="flex items-center justify-between mx-auto bg-white max-w-8xl px-6 py-2">
         <BrandLogo />
 
         <NavigationMenu>
@@ -29,20 +29,20 @@ export function Navbar() {
               />
             ))}
 
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "p-5 text-xl font-semibold hover:bg-transparent")}>
+{/*             <NavigationMenuItem>
+              <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-sm font-medium hover:bg-transparent")}>
                 <Link href="/about">About</Link>
               </NavigationMenuLink>
-            </NavigationMenuItem>
+            </NavigationMenuItem> */}
 
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="lg" className="p-3 text-md font-semibold transition-all duration-200 active:scale-95">
+        <div className="flex items-center gap-2">
+          <Button asChild variant="ghost" size="sm" className="px-4 text-sm font-medium rounded-full transition-all hover:bg-transparent! hover:text-primary duration-200 active:scale-95">
             <Link href="/login">Login</Link>
           </Button>
-          <Button asChild size="lg" className="p-3 text-md font-semibold transition-all duration-200 hover:brightness-110 active:scale-95">
+          <Button asChild size="sm" className="px-4 text-sm font-medium rounded-full transition-all duration-200 hover:brightness-110 active:scale-95">
             <Link href="/signup">Sign Up</Link>
           </Button>
         </div>
@@ -53,23 +53,23 @@ export function Navbar() {
 
 function BrandLogo() {
   return (
-    <Link href="/" aria-label="Go to Akita Pedigree homepage" className="flex items-center gap-3">
-      <div className="relative flex h-14 w-14 items-center justify-center">
+    <Link href="/" aria-label="Go to Akita Pedigree homepage" className="flex items-center gap-2.5">
+      <div className="relative flex h-10 w-10 items-center justify-center shrink-0">
         <Image
           src="/icon.png"
           alt="Akita Pedigree Logo"
           fill
           priority
-          sizes="72px"
+          sizes="40px"
           className="object-contain"
         />
       </div>
 
-      <div className="flex flex-col justify-center text-left leading-none" aria-hidden="true">
-        <span className="text-2xl font-extrabold tracking-tight text-primary">
+      <div className="flex flex-col justify-center text-left" aria-hidden="true">
+        <span className="text-lg font-extrabold tracking-tight text-primary leading-none">
           Akita
         </span>
-        <span className="-mt-2 text-xl font-extrabold tracking-tight text-foreground">
+        <span className=" text-sm font-extrabold tracking-tight text-foreground leading-none">
           Pedigree
         </span>
       </div>
