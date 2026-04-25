@@ -43,7 +43,7 @@ export function Navbar() {
             <Link href="/login">Login</Link>
           </Button>
           <Button asChild size="sm" className="px-4 text-sm font-medium rounded-full transition-all duration-200 hover:brightness-110 active:scale-95">
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/register">Sign Up</Link>
           </Button>
         </div>
       </div>

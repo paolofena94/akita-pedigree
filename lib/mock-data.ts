@@ -3,6 +3,7 @@ import { Dog } from "@/app/types/akita";
 export const MOCK_DOG: Dog = {
   id: "akita-123",
   slug: "kashi-go",
+
   name: "Kashi Go",
   callName: "Kashi",
   gender: "Male",
@@ -13,13 +14,13 @@ export const MOCK_DOG: Dog = {
   breeder: "Zuzanna Chade",
   kennel: "Fuen No Oka",
   owner: "Mario Margherito Rossi",
-  landOfBirth: "PL", // Polonia
-  landOfStanding: "IT", // Italia
+  landOfBirth: "PL",
+  landOfStanding: "IT",
   weight: 38,
   height: 67,
-  photoUrl: "/images/kashi.jpg", // Assicurati che il percorso sia corretto
+  photoUrl: "/images/kashi.jpg",
   thumbnails: [],
-  
+
   // Dati Salute
   health: [
     {
@@ -45,6 +46,30 @@ export const MOCK_DOG: Dog = {
     }
   ],
 
+  genetics: [
+    {
+      "id": "g1",
+      "icon": "dna",
+      "title": "Amelogenesis Imperfecta (AI)",
+      "value": "N/N (Clear)",
+      "color": "emerald"
+    },
+    {
+      "id": "g2",
+      "icon": "scissors",
+      "title": "Coat Length (FGF5)",
+      "value": "N/N (Short Hair)",
+      "color": "blue"
+    },
+    {
+      "id": "g3",
+      "icon": "palette",
+      "title": "K-Locus (Brindle)",
+      "value": "ky/ky (Non-brindle)",
+      "color": "amber"
+    }
+  ],
+  
   // Titoli e Awards
   awards: [
     {
