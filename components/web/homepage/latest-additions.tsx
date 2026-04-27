@@ -189,6 +189,7 @@ export function LatestAdd() {
                 className="-right-10 h-6 w-6 md:h-10 md:w-10 md:-right-14 bg-background text-primary transition-all duration-300 hover:scale-110 hover:bg-primary hover:text-primary-foreground active:scale-90 [&_svg]:stroke-[3px] [&_svg]:w-4! [&_svg]:h-4! md:[&_svg]:w-6! md:[&_svg]:h-6!" />
             </div>
           )}
+          
         </Carousel>
 
         {/* Link Mobile */}

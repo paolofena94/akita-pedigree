@@ -1,78 +1,79 @@
-import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link"
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
+    NavigationMenu,
+    NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { cn } from "@/lib/utils";
-import { menuEntries } from "@/config/navigation";
-import { NavDropdownCategory } from "./dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { menuEntries } from "@/config/navigation"
+import { Button } from "@/components/ui/button"
+import { NavDropdownCategory } from "./nav-category"
+import { UserButton } from "../auth/user-button"
+import { BrandLogo } from "../shared/brand-logo"
+import { getCurrentUserProfile } from "@/lib/db/users"
+import { signOutAction } from "@/app/actions/auth"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Suspense } from "react"
 
-export function Navbar() {
-  return (
-    <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b border-slate-200">
-      <div className="flex items-center justify-between mx-auto bg-white max-w-8xl px-6 py-2">
-        <BrandLogo />
+export async function Navbar() {
 
-        <NavigationMenu>
-          <NavigationMenuList>
+    return (
+        <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b border-slate-200">
+            <div className="flex items-center justify-between mx-auto bg-white max-w-8xl px-6 py-2">
+                <BrandLogo />
 
-            {menuEntries.map((menu) => (
-              <NavDropdownCategory
-                key={menu.title}
-                title={menu.title}
-                items={menu.items}
-              />
-            ))}
+                <NavigationMenu>
+                    <NavigationMenuList>
+                        {menuEntries.map((menu) => (
+                            <NavDropdownCategory
+                                key={menu.title}
+                                title={menu.title}
+                                items={menu.items}
+                            />
+                        ))}
+                    </NavigationMenuList>
+                </NavigationMenu>
 
-{/*             <NavigationMenuItem>
-              <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "px-4 py-2 text-sm font-medium hover:bg-transparent")}>
-                <Link href="/about">About</Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem> */}
-
-          </NavigationMenuList>
-        </NavigationMenu>
-
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm" className="px-4 text-sm font-medium rounded-full transition-all hover:bg-transparent! hover:text-primary duration-200 active:scale-95">
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button asChild size="sm" className="px-4 text-sm font-medium rounded-full transition-all duration-200 hover:brightness-110 active:scale-95">
-            <Link href="/register">Sign Up</Link>
-          </Button>
-        </div>
-      </div>
-    </nav>
-  )
+                <div className="flex items-center gap-2">
+                    <Suspense fallback={<AuthSkeleton />}>
+                        <AuthSection />
+                    </Suspense>
+                </div>
+            </div>
+        </nav>
+    )
 }
 
-function BrandLogo() {
-  return (
-    <Link href="/" aria-label="Go to Akita Pedigree homepage" className="flex items-center gap-2.5">
-      <div className="relative flex h-10 w-10 items-center justify-center shrink-0">
-        <Image
-          src="/icon.png"
-          alt="Akita Pedigree Logo"
-          fill
-          priority
-          sizes="40px"
-          className="object-contain"
-        />
-      </div>
+async function AuthSection() {
+    const { user, profile } = await getCurrentUserProfile();
 
-      <div className="flex flex-col justify-center text-left" aria-hidden="true">
-        <span className="text-lg font-extrabold tracking-tight text-primary leading-none">
-          Akita
-        </span>
-        <span className=" text-sm font-extrabold tracking-tight text-foreground leading-none">
-          Pedigree
-        </span>
-      </div>
-    </Link>
-  )
+    if (user) {
+        return (
+            <UserButton
+                username={profile?.username || "User"}
+                avatarUrl={profile?.avatar_url}
+                onSignOut={signOutAction}
+            />
+        );
+    }
+
+    return (
+        <>
+            <Button asChild variant="ghost" size="sm" className="px-4 text-sm font-medium rounded-full transition-all hover:bg-transparent! hover:text-primary duration-200 active:scale-95">
+                <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild size="sm" className="px-4 text-sm font-medium rounded-full transition-all duration-200 hover:brightness-110 active:scale-95">
+                <Link href="/register">Sign Up</Link>
+            </Button>
+        </>
+    );
+}
+
+function AuthSkeleton() {
+    return (
+        <div className="flex items-center gap-3 px-2 py-1.5">
+            {/* Simula l'Avatar circolare */}
+            <Skeleton className="h-6 w-6 rounded-full" />
+            {/* Simula l'Username */}
+            <Skeleton className="h-4 w-20 rounded-md hidden sm:block" />
+        </div>
+    )
 }

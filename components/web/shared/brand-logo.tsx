@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils"; // Assumendo che tu abbia la utility 'cn' di shadcn
+import { cn } from "@/lib/utils";
 
 type LogoSize = "sm" | "md" | "lg" | "xl";
 
 interface BrandLogoProps {
   size?: LogoSize;
   inverse?: boolean; // Se true, fa diventare le scritte bianche per fondi scuri/colorati
+  withLink?: boolean; // Nuova prop per controllare il link
   className?: string;
 }
 
@@ -42,15 +43,12 @@ const sizeConfig = {
   },
 };
 
-export function BrandLogo({ size = "md", inverse = false, className }: BrandLogoProps) {
+export function BrandLogo({ size = "md", inverse = false, withLink = true, className }: BrandLogoProps) {
   const config = sizeConfig[size];
+  const containerClasses = cn(`flex items-center ${config.container}`, className);
 
-  return (
-    <Link 
-      href="/" 
-      aria-label="Go to Akita Pedigree homepage" 
-      className={cn(`flex items-center ${config.container}`, className)}
-    >
+  const innerContent = (
+    <>
       <div className={cn(`relative flex shrink-0 items-center justify-center`, config.image)}>
         <Image
           src="/icon.png"
@@ -82,6 +80,22 @@ export function BrandLogo({ size = "md", inverse = false, className }: BrandLogo
           Pedigree
         </span>
       </div>
-    </Link>
+    </>
+  );
+
+  // Se withLink è true, restituiamo il componente avvolto in un <Link>
+  if (withLink) {
+    return (
+      <Link href="/" aria-label="Go to Akita Pedigree homepage" className={containerClasses}>
+        {innerContent}
+      </Link>
+    );
+  }
+
+  // Altrimenti, restituiamo un semplice <div> non cliccabile
+  return (
+    <div className={containerClasses}>
+      {innerContent}
+    </div>
   );
 }

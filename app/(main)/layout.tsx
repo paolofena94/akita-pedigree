@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/web/layout/navbar";
 import { Footer } from "@/components/web/layout/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function MainLayout({
   children,
@@ -11,6 +12,7 @@ export default function MainLayout({
       <Navbar />
       <main className="flex-1">
         {children}
+        <Toaster position="bottom-right" />
       </main>
       <Footer />
     </div>

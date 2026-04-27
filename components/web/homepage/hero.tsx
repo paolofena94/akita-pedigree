@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section aria-labelledby="hero-heading" className="w-full relative min-h-[calc(100vh-80px)] py-12 flex flex-col items-center justify-center mt-[navbar-height] overflow-hidden">
+    <section aria-labelledby="hero-heading" className="w-full relative min-h-[calc(100vh-59px)] py-12 flex flex-col items-center justify-center mt-[navbar-height] overflow-hidden">
       
       <div className="absolute inset-0 z-0">
         <Image 

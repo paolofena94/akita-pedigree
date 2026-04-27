@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { BrandLogo } from "../shared/brand-logo";
 
 export function Footer() {
   return (
@@ -8,23 +8,20 @@ export function Footer() {
 
       <h2 id="footer-heading" className="sr-only">Footer navigation</h2>
       
-      {/* Ridotto il padding verticale da py-6 a py-12 per dare più respiro, ma con font più piccoli */}
       <div className="flex flex-col md:flex-row flex-wrap justify-between gap-10 mx-auto max-w-7xl px-8 py-12">
           
-        {/* Il logo e una breve tagline */}
         <div className="flex flex-col gap-4 max-w-xs">
-          <FooterLogo />
+          <BrandLogo />
           <p className="text-sm text-muted-foreground leading-relaxed">
             The global database for Akita Inu pedigrees. Discover bloodlines, health clearances, and connect with breeders worldwide.
           </p>
         </div>
         
         <div className="flex flex-wrap gap-12 sm:gap-16">
+          
           {/* Colonna 1: Esplora */}
           <nav aria-label="Discover links" className="flex flex-col items-start gap-4">
-            {/* Ridotto da text-lg a text-sm font-bold uppercase per uno stile più pulito */}
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">Discover</h3>
-            {/* Ridotto da text-md a text-sm */}
             <ul className="flex flex-col space-y-3 text-sm text-muted-foreground">
               <li><Link href="/about" className="transition-colors hover:text-primary">About Us</Link></li>
               <li><Link href="/faq" className="transition-colors hover:text-primary">FAQ / Help</Link></li>
@@ -52,7 +49,7 @@ export function Footer() {
               </ul>
             </nav>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">Social</h3>
               <div className="flex gap-4 text-muted-foreground">
                 <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Visit our Facebook page" className="transition-colors hover:text-primary">
@@ -100,30 +97,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
-
-function FooterLogo() {
-  return (
-    <Link href="/" aria-label="Go to homepage" className="flex items-center gap-2.5">
-      <div className="relative flex h-10 w-10 items-center justify-center shrink-0">
-        <Image
-          src="/icon.png"
-          alt="Muso Akita Logo"
-          fill
-          priority
-          sizes="40px"
-          className="object-contain"
-        />
-      </div>
-
-      <div className="flex flex-col justify-center text-left" aria-hidden="true">
-        <span className="text-lg font-extrabold tracking-tight text-primary leading-none">
-          Akita
-        </span>
-        <span className="text-sm font-extrabold tracking-tight text-foreground leading-none">
-          Pedigree
-        </span>
-      </div>
-    </Link>
-  )
 }
