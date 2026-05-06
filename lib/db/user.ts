@@ -11,7 +11,7 @@ export async function getCurrentUserProfile() {
 
     const { data: profile, error } = await supabase
         .from('users')
-        .select('username, avatar_url')
+        .select('username, bio, avatar_url')
         .eq('user_id', user.id)
         .maybeSingle();
 
@@ -20,4 +20,18 @@ export async function getCurrentUserProfile() {
     }
 
     return { user, profile };
+}
+
+export async function isUsernameTaken(newUsername: string, currentUsername: string) {
+  const supabase = await createClient()
+  
+  const { data } = await supabase
+    .from('users')
+    .select('user_id')
+    .eq('username', newUsername)
+    .neq('user_id', currentUsername)
+    .single()
+
+  // Il "!!" trasforma un oggetto in true (se esiste) o false (se è null)
+  return !!data 
 }

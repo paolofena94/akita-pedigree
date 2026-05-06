@@ -1,7 +1,7 @@
 import { Dog } from "@/app/types/akita";
 
 export const MOCK_DOG: Dog = {
-  id: "akita-123",
+  id: "1",
   slug: "kashi-go",
 
   name: "Kashi Go",

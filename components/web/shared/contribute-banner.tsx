@@ -21,7 +21,7 @@ export default function ContributeBanner() {
       </p>
 
       <Button asChild size="lg" className="p-5 text-md font-semibold transition-all duration-200 active:scale-95">
-        <Link href="/signin">
+        <Link href="/register">
           Create a Free Account
         </Link>
       </Button>

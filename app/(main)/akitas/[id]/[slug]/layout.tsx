@@ -1,61 +1,58 @@
 import { HeroCard } from "@/components/web/akitas/hero-card";
-import { SidebarNav } from "@/components/web/layout/sidebar";
+import { Home, HeartPulse, Network, Users, PawPrint, ImageIcon } from "lucide-react";
 import { ReactNode } from "react";
+import { Sidebar, SidebarGroup } from "@/components/web/layout/sidebar";
 
 export default async function AkitaProfileLayout({
     children,
     params,
 }: {
     children: ReactNode;
-    params: Promise<{ slug: string }>;
+    params: Promise<{ id: string; slug: string }>;
 }) {
-    const { slug } = await params;
+    const { id, slug } = await params;
+    const basePath = `/akitas/${id}/${slug}`;
+
+    const akitaMenu: SidebarGroup[] = [
+        {
+            label: "Akita Profile",
+            items: [
+                { title: "Overview", href: basePath, icon: <Home className="w-4 h-4" /> },
+                { title: "Health & Genetics", href: `${basePath}/health`, icon: <HeartPulse className="w-4 h-4" /> },
+                { title: "Pedigree & Lineage", href: `${basePath}/lineage`, icon: <Network className="w-4 h-4" /> },
+                { title: "Family Network", href: `${basePath}/family`, icon: <Users className="w-4 h-4" /> },
+                { title: "Offspring", href: `${basePath}/offspring`, icon: <PawPrint className="w-4 h-4" /> },
+                { title: "Media", href: `${basePath}/media`, icon: <ImageIcon className="w-4 h-4" /> },
+            ]
+        }
+    ];
 
     return (
-        
         <div className="flex min-h-screen items-start bg-background">
+            {/* 
+               La Sidebar rimane fuori dal contenitore main. 
+               Essendo il genitore 'items-start', la sidebar manterrà 
+               la sua altezza sticky definita nel componente. 
+            */}
+            <Sidebar groups={akitaMenu} />
 
-            {/* SIDEBAR */}
-            {/* top-[57px] calcolato prima per incastrarsi sotto la navbar */}
-            <aside className="sticky top-14.25 h-[calc(100vh-57px)] border-r border-slate-200 bg-white hidden md:flex flex-col shrink-0 overflow-y-auto">
+            {/* 
+                1. AGGIUSTAMENTO DISTANZE: 
+                Usiamo lo stesso padding del PrivateLayout: p-4 md:p-8 lg:p-12
+            */}
+            <main className="flex-1 p-4 md:p-8 lg:p-12 relative bg-muted/10">
                 
-                
-                {/* Il trucco per centrare: my-auto.
-                  Questo div prenderà tutto lo spazio sopra e sotto, 
-                  mettendo il Titolo e il Menu esattamente al centro dello schermo.
+                {/* 
+                    2. AGGIUSTAMENTO LARGHEZZA: 
+                    Usiamo max-w-5xl per matchare la Dashboard
                 */}
-                <div className="flex flex-col my-auto w-full py-8">
-                    <div className="px-8">
-                        <span className="font-bold text-xs tracking-widest text-muted-foreground uppercase">
-                            Akita Profile
-                        </span>
-                    </div>
-                    
-                    <SidebarNav slug={slug} />
-                </div>
-            </aside>
-
-
-            {/* MAIN CONTENT */}
-            <main className="flex-1 relative w-full p-6 lg:p-8">
-                
-                {/* Contenitore unico max-w-6xl.
-                  In questo modo la Hero e le sezioni sotto (Overview, Health, ecc.)
-                  saranno sempre larghe uguali e centrate perfettamente.
-                */}
-                <div className="max-w-6xl mx-auto flex flex-col">
-                    
-                    {/* La Hero Card */}
+                <div className="mx-auto max-w-6xl flex flex-col">
                     <HeroCard />
-
-                    {/* Il contenuto della rotta specifica */}
                     <div className="w-full">
                         {children}
                     </div>
-                    
                 </div>
             </main>
-
         </div>
     );
 }

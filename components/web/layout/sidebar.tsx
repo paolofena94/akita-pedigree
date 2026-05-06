@@ -1,51 +1,66 @@
-"use client";
+// components/web/layout/dashboard-sidebar.tsx
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, HeartPulse, Network, Users, PawPrint, ImageIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 
-const NAV_ITEMS = [
-  { name: "Overview", path: "", icon: Home }, // path vuoto = /akitas/[slug]
-  { name: "Health & Genetics", path: "/health", icon: HeartPulse },
-  { name: "Pedigree & Lineage", path: "/lineage", icon: Network },
-  { name: "Family Network", path: "/family", icon: Users },
-  { name: "Offspring", path: "/offspring", icon: PawPrint },
-  { name: "Media", path: "/media", icon: ImageIcon },
-];
+export interface SidebarItem {
+  title: string
+  href: string
+  icon: React.ReactNode
+}
 
-export function SidebarNav({ slug }: { slug: string }) {
-  const pathname = usePathname();
-  const basePath = `/akitas/${slug}`;
+export interface SidebarGroup {
+  label: string
+  items: SidebarItem[]
+}
+
+interface DashboardSidebarProps {
+  groups: SidebarGroup[]
+}
+
+export function Sidebar({ groups }: DashboardSidebarProps) {
+  const pathname = usePathname()
 
   return (
-    <nav className="p-4 space-y-1.5 flex-1">
-      {NAV_ITEMS.map((item) => {
-        const href = `${basePath}${item.path}`;
-        // Controllo esatto per la home, controllo parziale per le altre voci
-        const isActive = item.path === "" ? pathname === basePath : pathname.startsWith(href);
+    <aside className="hidden sticky top-16.75 h-[calc(100vh-57px)] overflow-y-auto md:flex w-64 shrink-0 flex-col border-r bg-white pt-6 pb-10 px-4">
+      <nav className="flex flex-col gap-6">
+        {groups.map((group, index) => (
+          <div key={index} className="flex flex-col gap-2">
+            {/* Titolo del Gruppo */}
+            <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {group.label}
+            </h4>
+            
+            <div className="flex flex-col gap-1">
+              {group.items.map((item) => {
+                const isActive = pathname === item.href
 
-        return (
-          <Link
-            key={item.name}
-            href={href}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
-              isActive
-                ? "bg-accent text-primary" // Stile Attivo (Sfondo arancione chiaro)
-                : "text-foreground/80 hover:bg-accent hover:text-foreground" // Stile Inattivo
-            )}
-          >
-            <item.icon 
-              className={cn(
-                "w-5 h-5 transition-colors duration-200", 
-                isActive ? "text-primary" : "text-foreground/80"
-              )} 
-            />
-            {item.name}
-          </Link>
-        );
-      })}
-    </nav>
-  );
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      buttonVariants({ variant: "ghost" }),
+                      "justify-start gap-3 px-2 font-medium transition-all duration-200",
+                      isActive 
+                        ? "bg-accent text-primary hover:bg-accent hover:text-primary" 
+                        : "text-foreground"
+                    )}
+                  >
+                    <span className={cn(isActive ? "text-primary" : "text-foreground")}>
+                      {item.icon}
+                    </span>
+                    {item.title}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </nav>
+    </aside>
+  )
 }

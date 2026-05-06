@@ -12,7 +12,7 @@ export default function MainLayout({
       <Navbar />
       <main className="flex-1">
         {children}
-        <Toaster position="bottom-right" />
+        <Toaster position="bottom-center" />
       </main>
       <Footer />
     </div>

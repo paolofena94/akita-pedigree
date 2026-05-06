@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useTransition } from "react"
-import { LogOut, User as UserIcon, ChevronDown, Dog, Home, Users, Settings, History, Loader2, LucideIcon } from "lucide-react"
+import { LogOut, User as UserIcon, ChevronDown, Dog, Home, Users, Settings, History, Loader2, LucideIcon, LayoutDashboard } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -37,7 +37,7 @@ export function UserButton({ username, avatarUrl, onSignOut }: UserButtonProps) 
           disabled={isPending}
           className="flex items-center gap-2 px-3 py-2 rounded-full transition-all hover:bg-accent/60 focus:outline-none border border-transparent data-[state=open]:border-accent data-[state=open]:bg-accent/60 disabled:opacity-50"
         >
-          <Avatar className="h-6 w-6 border border-primary/30">
+          <Avatar className="h-7 w-7 border border-primary/30">
             <AvatarImage src={avatarUrl || undefined} alt={username} />
             <AvatarFallback className="bg-accent text-primary">
               <UserIcon className="h-3 w-3" />
@@ -67,20 +67,7 @@ export function UserButton({ username, avatarUrl, onSignOut }: UserButtonProps) 
       > 
         {/* SECTION 1: ACCOUNT & ACTIVITY */}
         <DropdownMenuGroup>
-          {ACCOUNT_LINKS.map((item) => (
-            <UserNavAction key={item.href} {...item} />
-          ))}
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator className="my-1" />
-
-        {/* SECTION 2: REGISTRY RECORDS */}
-        <DropdownMenuLabel className="px-3 py-1 text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-          Registry Records
-        </DropdownMenuLabel>
-        
-        <DropdownMenuGroup>
-          {REGISTRY_LINKS.map((item) => (
+          {MENU_LINKS.map((item) => (
             <UserNavAction key={item.href} {...item} />
           ))}
         </DropdownMenuGroup>
@@ -108,16 +95,11 @@ export function UserButton({ username, avatarUrl, onSignOut }: UserButtonProps) 
   )
 }
 
-const ACCOUNT_LINKS = [
-  { href: "/settings/profile", label: "Account Settings", icon: Settings },
-  { href: "/activity", label: "Activity Log", icon: History },
+const MENU_LINKS = [
+  { href: "/dashboard", label: "My Dashboard", icon: LayoutDashboard },
+  { href: "/settings/profile", label: "Settings", icon: Settings },
 ]
 
-const REGISTRY_LINKS = [
-  { href: "/my-identity", label: "Linked Person Profile", icon: Users },
-  { href: "/my-kennels", label: "Managed Kennels", icon: Home },
-  { href: "/my-akitas", label: "Owned & Bred Akitas", icon: Dog },
-]
 
 function UserNavAction({ href, label, icon: Icon }: { href: string; label: string; icon: LucideIcon }) {
   return (

@@ -36,3 +36,17 @@ export function getCountryOptions() {
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
 }
+
+/**
+ * Utility per avere la lista completa in inglese per i menu a tendina
+ * (Senza emoji delle bandiere, ideale per i form formali)
+ */
+export function getCountryOptionsWithoutFlags() {
+  const list = countries.getNames("en", { select: "official" });
+  return Object.entries(list)
+    .map(([code, name]) => ({
+      value: code,
+      label: name, // Usiamo solo il nome, senza chiamare getFlagEmoji
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}

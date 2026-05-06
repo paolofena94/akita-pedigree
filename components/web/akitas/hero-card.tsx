@@ -12,6 +12,7 @@ import { getCountryName, getFlagEmoji } from "@/lib/nations";
 
 // --- TIPI CONDIVISI ---
 interface DogData {
+    id: string;
     slug: string;
     name: string;
     callName: string;
@@ -42,6 +43,7 @@ const images = [
 ];
 
 const dog: DogData = {
+    id: "1",
     slug: "kashi-go",
     name: "Shiratoriseiza No Tenshi Of The Heavenly Mountain",
     callName: "Kashi",
@@ -62,7 +64,7 @@ const dog: DogData = {
 // ==========================================
 export function HeroCard() {
     const pathname = usePathname();
-    const basePath = `/akitas/${dog.slug}`;
+    const basePath = `/akitas/${dog.id}/${dog.slug}`;
 
     // Rimuoviamo eventuali slash finali per garantire la corrispondenza esatta con il basePath
     const safePathname = pathname?.replace(/\/$/, '');

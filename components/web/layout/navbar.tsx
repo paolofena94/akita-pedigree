@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { NavDropdownCategory } from "./nav-category"
 import { UserButton } from "../auth/user-button"
 import { BrandLogo } from "../shared/brand-logo"
-import { getCurrentUserProfile } from "@/lib/db/users"
+import { getCurrentUserProfile } from "@/lib/db/user"
 import { signOutAction } from "@/app/actions/auth"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense } from "react"
@@ -16,9 +16,12 @@ import { Suspense } from "react"
 export async function Navbar() {
 
     return (
-        <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b border-slate-200">
+        <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b">
             <div className="flex items-center justify-between mx-auto bg-white max-w-8xl px-6 py-2">
-                <BrandLogo />
+                <div className="my-1">
+                    <BrandLogo />
+                </div>
+
 
                 <NavigationMenu>
                     <NavigationMenuList>

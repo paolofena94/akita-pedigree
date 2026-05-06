@@ -1,52 +1,44 @@
-import { User, Settings, ShieldCheck, Bell } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 
-const sidebarNavItems = [
-  {
-    title: "Profilo",
-    href: "/settings/profile",
-    icon: <User className="w-4 h-4" />,
-  },
-  {
-    title: "Account",
-    href: "/settings/account",
-    icon: <Settings className="w-4 h-4" />,
-  },
-  {
-    title: "Sicurezza",
-    href: "/settings/security",
-    icon: <ShieldCheck className="w-4 h-4" />,
-  },
+const settingsTabs = [
+  { title: "Personal", href: "/settings/profile" },
+  { title: "Login & Security", href: "/settings/security" },
 ]
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="container max-w-6xl py-10 px-4 md:px-6">
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside className="lg:w-1/5">
-          <nav className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1">
-            {sidebarNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "justify-start hover:bg-muted gap-2"
-                )}
-              >
-                {item.icon}
-                {item.title}
-              </Link>
-            ))}
-          </nav>
-        </aside>
-        <div className="flex-1 lg:max-w-2xl">
-          <div className="space-y-6">
-            {children}
-          </div>
-        </div>
+    <div className="space-y-4">
+      {/* Intestazione della sezione */}
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
+        <p className="text-muted-foreground mt-2">
+          Manage your account settings and preferences.
+        </p>
+      </div>
+
+      {/* TABS ORIZZONTALI */}
+      <div className="border-b border-border">
+        <nav className="-mb-px flex space-x-6 overflow-x-auto">
+          {settingsTabs.map((tab) => (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={cn(
+                "whitespace-nowrap border-b-2 py-3 text-sm font-medium transition-colors hover:text-foreground",
+                // TODO: Aggiungeremo la logica per il tab attivo (border-primary text-foreground) con usePathname
+                "border-transparent text-muted-foreground hover:border-border" 
+              )}
+            >
+              {tab.title}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      {/* Qui verrà renderizzato il ProfileForm, SecurityForm, ecc. */}
+      <div className="pt-4 pb-16">
+        {children}
       </div>
     </div>
   )
