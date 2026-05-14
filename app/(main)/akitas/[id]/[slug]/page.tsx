@@ -1,7 +1,7 @@
 import { Awards } from "@/components/web/akitas/awards";
-import { MOCK_DOG } from "@/lib/mock-data";
 import { OwnershipInfo } from "@/components/web/akitas/ownership";
 import { HealthClearances } from "@/components/web/akitas/health-clearances";
+import { MOCK_DOG } from "@/__mock__/mock-akita";
 
 export default function AkitaOverviewPage() {
   // const dog = await getDogBySlug(params.slug);

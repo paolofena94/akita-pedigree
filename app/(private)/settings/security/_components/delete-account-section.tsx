@@ -18,7 +18,7 @@ import {
   DialogDescription, 
   DialogFooter,
 } from "@/components/ui/dialog"
-import { deleteAccountAction } from "@/app/actions/security"
+import { deleteAccountAction } from "@/actions/security"
 
 export default function DeleteAccountSection() {
   const [loading, setLoading] = useState(false)

@@ -43,7 +43,7 @@ export function StepBasicInfo({ disabled }: { disabled: boolean }) {
                 <Controller name="state" control={control} render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                         <div className="flex justify-between items-baseline mb-1.5">
-                            <FieldLabel htmlFor={field.name} className="mb-0">State / Region</FieldLabel>
+                            <FieldLabel htmlFor={field.name} className="mb-0">State / Province</FieldLabel>
                             <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Optional</span>
                         </div>
                         <Input {...field} id={field.name} placeholder="e.g. Tokyo" disabled={disabled} />

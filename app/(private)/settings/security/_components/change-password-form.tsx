@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { toast } from "sonner"
 import { KeyRound } from "lucide-react"
-import { updatePasswordAction } from "@/app/actions/security"
+import { updatePasswordAction } from "@/actions/security"
 
 export default function ChangePasswordForm() {
   const [loading, setLoading] = useState(false)

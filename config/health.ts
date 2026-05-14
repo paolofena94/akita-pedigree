@@ -8,14 +8,14 @@ import {
   FileText, 
   LucideIcon 
 } from "lucide-react";
-import { HealthColor, HealthIcon } from "@/app/types/akita";
+import { BadgeColor, HealthIcon } from "@/types/akita";
 
 /**
  * Mappa dei colori strutturata.
  * Permette al componente di applicare classi diverse a elementi diversi 
  * (icona, bordo del cerchio, testo del valore) mantenendo la coerenza cromatica.
  */
-export const HEALTH_COLOR_MAP: Record<HealthColor, { 
+export const HEALTH_COLOR_MAP: Record<BadgeColor, { 
   bg: string; 
   border: string; 
   text: string; 

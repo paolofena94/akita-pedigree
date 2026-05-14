@@ -33,10 +33,17 @@ export function Sidebar({ groups }: DashboardSidebarProps) {
             <h4 className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {group.label}
             </h4>
-            
+
             <div className="flex flex-col gap-1">
               {group.items.map((item) => {
-                const isActive = pathname === item.href
+
+                // LOGICA AGGIORNATA PER I SOTTOPATH
+                const baseSection = item.href === "/" ? "/" : `/${item.href.split('/')[1]}`;
+
+                const isActive =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(baseSection);
 
                 return (
                   <Link
@@ -45,8 +52,8 @@ export function Sidebar({ groups }: DashboardSidebarProps) {
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "justify-start gap-3 px-2 font-medium transition-all duration-200",
-                      isActive 
-                        ? "bg-accent text-primary hover:bg-accent hover:text-primary" 
+                      isActive
+                        ? "bg-accent text-primary hover:bg-accent hover:text-primary"
                         : "text-foreground"
                     )}
                   >

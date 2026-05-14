@@ -1,11 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import ProfileForm from "./_components/profile-form"
 import { redirect } from "next/navigation"
-import { getCurrentUserProfile } from "@/lib/db/user"
+import { getCurrentUserSnippet } from "@/lib/db/user"
 import AvatarUpload from "./_components/avatar-upload"
 
 export default async function SettingsProfilePage() {
-  const { user, profile } = await getCurrentUserProfile()
+  const { user, profile } = await getCurrentUserSnippet()
 
   if (!user) redirect("/login")
   if (!profile) return <div className="p-8 text-center text-muted-foreground">Profile data not found.</div>

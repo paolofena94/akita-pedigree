@@ -1,6 +1,6 @@
 import { ChevronDown, Eye, Heart, HeartPulse, LucideIcon } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HealthClearance } from "@/app/types/akita";
+import { HealthClearance } from "@/types/akita";
 import { HEALTH_ICON_MAP, HEALTH_COLOR_MAP } from "@/config/health";
 import { cn } from "@/lib/utils";
 

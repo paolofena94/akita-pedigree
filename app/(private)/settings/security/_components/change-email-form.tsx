@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { toast } from "sonner"
 import { Mail } from "lucide-react"
-import { updateEmailAction } from "@/app/actions/security"
+import { updateEmailAction } from "@/actions/security"
 
 export default function ChangeEmailForm({ currentEmail }: { currentEmail: string | undefined }) {
   const [loading, setLoading] = useState(false)

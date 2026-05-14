@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { getCurrentUserProfile } from "@/lib/db/user"
+import { getCurrentUserSnippet } from "@/lib/db/user"
 import { redirect } from "next/navigation"
 import ChangeEmailForm from "./_components/change-email-form"
 import ChangePasswordForm from "./_components/change-password-form"
 import DeleteAccountSection from "./_components/delete-account-section"
 
 export default async function SecurityPage() {
-  const { user } = await getCurrentUserProfile()
+  const { user } = await getCurrentUserSnippet()
 
   if (!user) redirect("/login")
 

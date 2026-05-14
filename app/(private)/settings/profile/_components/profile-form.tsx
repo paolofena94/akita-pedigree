@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldLabel, FieldError } from "@/components/ui/field"
 import { toast } from "sonner"
 import { ProfileInput, userProfileSchema } from "@/lib/validations/user"
-import { updateUserProfileAction } from "@/app/actions/user"
+import { updateUserProfileAction } from "@/actions/user"
 
 export default function ProfileForm({ initialData }: { initialData: any }) {
   const [loading, setLoading] = useState(false)

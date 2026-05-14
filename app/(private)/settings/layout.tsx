@@ -1,15 +1,20 @@
-import Link from "next/link"
-import { cn } from "@/lib/utils"
+"use client"
+
+import { usePathname, useRouter } from "next/navigation"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const settingsTabs = [
-  { title: "Personal", href: "/settings/profile" },
+  { title: "Profile", href: "/settings/profile" },
   { title: "Login & Security", href: "/settings/security" },
 ]
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <div className="space-y-4">
-      {/* Intestazione della sezione */}
+
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
         <p className="text-muted-foreground mt-2">
@@ -17,29 +22,32 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         </p>
       </div>
 
-      {/* TABS ORIZZONTALI */}
-      <div className="border-b border-border">
-        <nav className="-mb-px flex space-x-6 overflow-x-auto">
+      <Tabs
+        value={pathname}
+        onValueChange={(value) => router.push(value)}
+        className="w-full"
+      >
+
+        <TabsList
+          variant="line"
+          className="w-full justify-start gap-8 border-b border-border bg-transparent p-0 rounded-none h-auto"
+        >
           {settingsTabs.map((tab) => (
-            <Link
+            <TabsTrigger
               key={tab.href}
-              href={tab.href}
-              className={cn(
-                "whitespace-nowrap border-b-2 py-3 text-sm font-medium transition-colors hover:text-foreground",
-                // TODO: Aggiungeremo la logica per il tab attivo (border-primary text-foreground) con usePathname
-                "border-transparent text-muted-foreground hover:border-border" 
-              )}
+              value={tab.href}
+              className="flex-none py-3 border-b-2 border-transparent text-muted-foreground rounded-none shadow-none data-[state=active]:border-b-primary data-[state=active]:text-primary data-[state=active]:shadow-none hover:text-primary!"
             >
               {tab.title}
-            </Link>
+            </TabsTrigger>
           ))}
-        </nav>
-      </div>
+        </TabsList>
+      </Tabs>
 
-      {/* Qui verrà renderizzato il ProfileForm, SecurityForm, ecc. */}
       <div className="pt-4 pb-16">
         {children}
       </div>
+
     </div>
   )
 }

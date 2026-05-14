@@ -56,7 +56,7 @@ export const addPersonSchema = z.object({
 
   notes: z.string()
     .trim()
-    .max(2000, "Notes cannot exceed 2000 characters")
+    .max(200, "Notes cannot exceed 200 characters")
     // Le note sono testo libero, quindi NON mettiamo la regex dei nomi qui,
     // altrimenti gli utenti non potrebbero usare virgole, numeri o punti interrogativi!
     .optional(),

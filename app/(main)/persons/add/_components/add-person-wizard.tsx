@@ -13,7 +13,7 @@ import { StepAdditionalInfo } from './steps/step-additional-info'
 import { WizardNavigation } from './wizard-navigation'
 
 import { addPersonSchema, AddPersonInput } from '@/lib/validations/person'
-import { checkExistingPersonsAction, createPersonAction } from '@/app/actions/person'
+import { checkExistingPersonsAction, createPersonAction } from '@/actions/person'
 
 export const STEPS = [
     { id: 'Step 1', name: 'Basic Info', fields: ['first_name', 'last_name', 'country', 'state'] },

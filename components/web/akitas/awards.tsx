@@ -1,6 +1,6 @@
 import { ChevronDown, Medal, LucideIcon, Trophy, AwardIcon } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Award } from "@/app/types/akita";
+import { Award } from "@/types/akita";
 import { cn } from "@/lib/utils";
 import { AWARD_COLOR_MAP, AWARD_ICON_MAP } from "@/config/award";
 

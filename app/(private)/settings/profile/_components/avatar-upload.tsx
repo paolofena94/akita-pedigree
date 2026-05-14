@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { User, Loader2, UploadCloud, RefreshCw, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { avatarFileSchema } from "@/lib/validations/user"
-import { uploadAvatarAction, removeAvatarAction } from "@/app/actions/user"
+import { uploadAvatarAction, removeAvatarAction } from "@/actions/user"
 import { cn } from "@/lib/utils"
 
 interface AvatarUploadProps {

@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { BrandLogo } from '../../../components/web/shared/brand-logo'
 import { createClient } from '@/lib/supabase/client'
 import { loginSchema, registerSchema, LoginInput, RegisterInput } from '@/lib/validations/auth'
-import { loginAction, signUpAction } from '@/app/actions/auth'
+import { loginAction, signUpAction } from '@/actions/auth'
 import { FormInputField } from '@/components/web/shared/form-input-field'
 import { FormCheckboxField } from '@/components/web/shared/form-checkbox-field'
 import { AuthSuccessDialog } from './auth-success-dialog'

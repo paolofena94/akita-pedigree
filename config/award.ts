@@ -6,7 +6,7 @@ import {
   Crown, 
   LucideIcon 
 } from "lucide-react";
-import { AwardColor, AwardIcon } from "@/app/types/akita";
+import { AwardColor, AwardIcon } from "@/types/akita";
 
 /**
  * Mappa delle icone Lucide per la sezione Awards.

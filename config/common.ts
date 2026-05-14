@@ -1,5 +1,5 @@
 import { Mars, Venus, LucideIcon } from "lucide-react";
-import { Gender } from "@/app/types/akita";
+import { Gender } from "@/types/akita";
 
 /**
  * Associa il genere all'icona corrispondente e al colore di riferimento.

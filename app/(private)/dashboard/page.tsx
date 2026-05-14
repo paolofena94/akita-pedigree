@@ -5,11 +5,11 @@ import { MyKennelsSection } from "./_components/kennel-card"
 import { LinkedPersonCard } from "./_components/linked-person-card"
 import { ActivityCard } from "./_components/activity-card"
 import { redirect } from "next/navigation"
-import { getCurrentUserProfile } from "@/lib/db/user"
+import { getCurrentUserSnippet } from "@/lib/db/user"
 
 export default async function OverviewPage() {
   // 1. Recupero i dati reali dal database
-  const { user, profile } = await getCurrentUserProfile();
+  const { user, profile } = await getCurrentUserSnippet();
 
   // 2. Protezione: Se l'utente non è loggato, reindirizza alla login
   if (!user) {
