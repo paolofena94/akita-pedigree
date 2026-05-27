@@ -1,149 +1,95 @@
-'use client'
+import { Suspense } from 'react';
+import { notFound, redirect } from 'next/navigation';
+import { PersonProfileTabs } from './_components/person-profile-tabs';
+import { PersonSidebar } from './_components/person-sidebar';
+import { getPersonData } from '@/lib/db/person';
+import { Loader2 } from 'lucide-react'; // O usa la grafica del tuo skeleton
 
-import { usePathname, useParams, useRouter } from 'next/navigation'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { UserPen } from 'lucide-react'
-import { ProfileInfoCard } from './_components/person-info-card'
-import { EntryMetadataCard } from './_components/entry-metadata-card'
-import { BiographyCard } from './_components/biography-card'
-import { MOCK_PERSON } from '@/__mock__/mock-person'
-import { PersonProfile } from '@/types/person'
-import { UserLinkedCard } from './_components/user-linked-card'
+// --- SEO: Generazione dinamica dei metadati ---
+export async function generateMetadata({ 
+    params 
+}: { 
+    params: Promise<{ id: string; slug: string }>
+}) {
+    const { id } = await params;
+    const person = await getPersonData(id);
 
+    if (!person) {
+        return { title: 'Person Not Found' };
+    }
+
+    return {
+        title: `${person.first_name || ''} ${person.last_name}`.trim(),
+        description: person.bio ? person.bio.substring(0, 160) : `Person page of ${person.last_name}`,
+    };
+}
+
+// -------------------------------------------------------------------------
+// 1. IL GUSCIO SINCRONO (Protegge la rotta dal "Blocking Route")
+// -------------------------------------------------------------------------
 export default function PersonProfileLayout({
     children,
+    params,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
+    params: Promise<{ id: string; slug: string }>;
 }) {
-    const person = MOCK_PERSON;
-
-    const pathname = usePathname();
-    const params = useParams();
-    const router = useRouter();
-
-    const baseUrl = `/persons/${params.id}${params.slug ? `/${params.slug}` : ''}`;
-
-    const profileTabs = [
-        { title: "Overview", value: baseUrl, count: null },
-        { title: "Breedings", value: `${baseUrl}/breedings`, count: person.bred_dogs?.length || 0 },
-        { title: "Owned Akitas", value: `${baseUrl}/owned`, count: person.owned_dogs?.length || 0 },
-        { title: "Kennels", value: `${baseUrl}/kennels`, count: person.kennels?.length || 0 },
-        { title: "Statistics", value: `${baseUrl}/stats`, count: null },
-    ];
-
-    let activeTab = baseUrl;
-    if (pathname.includes('/kennels')) activeTab = `${baseUrl}/kennels`;
-    else if (pathname.includes('/breedings')) activeTab = `${baseUrl}/breedings`;
-    else if (pathname.includes('/owned')) activeTab = `${baseUrl}/owned`;
-    else if (pathname.includes('/stats')) activeTab = `${baseUrl}/stats`;
-
     return (
         <div className="max-w-7xl mx-auto px-6 py-8 animate-in fade-in duration-500">
-
-            {/* GRIGLIA PRINCIPALE (3 colonne su desktop) */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
-
-                {/* --- COLONNA SINISTRA: SIDEBAR --- */}
-                <div className="lg:col-span-1 space-y-6">
-                    <PersonSidebar person={person} />
+            <Suspense fallback={
+                <div className="flex items-center justify-center h-[60vh] text-slate-400">
+                    <Loader2 className="w-8 h-8 animate-spin" />
                 </div>
+            }>
+                <PersonLayoutContent params={params}>
+                    {children}
+                </PersonLayoutContent>
+            </Suspense>
+        </div>
+    );
+}
 
-                {/* --- COLONNA DESTRA: MAIN CONTENT --- */}
-                <div className="lg:col-span-2 space-y-6 flex flex-col h-full min-w-0">
+// -------------------------------------------------------------------------
+// 2. IL MOTORE ASINCRONO (Il vero "Guardiano" della rotta)
+// -------------------------------------------------------------------------
+async function PersonLayoutContent({
+    children,
+    params,
+}: {
+    children: React.ReactNode;
+    params: Promise<{ id: string; slug: string }>;
+}) {
+    const { id, slug } = await params;
+    
+    const person = await getPersonData(id);
 
-                    {/* MENU A SCHEDE */}
-                    <ProfileNavigationTabs
-                        activeTab={activeTab}
-                        profileTabs={profileTabs}
-                        onTabChange={(value) => router.push(value)}
-                    />
+    if (!person) {
+        notFound();
+    }
 
-                    <main className="flex-1">
-                        {children}
-                    </main>
+    // Controllo Canonical URL (reindirizza se lo slug è vecchio)
+    if (person.slug !== decodeURIComponent(slug)) {
+        redirect(`/persons/${id}/${person.slug}`);
+    }
 
-                </div>
+    return (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
+
+            {/* --- COLONNA SINISTRA: SIDEBAR --- */}
+            <div className="lg:col-span-1 space-y-6">
+                <PersonSidebar person={person} />
+            </div>
+
+            {/* --- COLONNA DESTRA: MAIN CONTENT --- */}
+            <div className="lg:col-span-2 space-y-6 flex flex-col h-full min-w-0">
+
+                {/* I tab non hanno più bisogno di Suspense qui, ci pensa il guscio esterno */}
+                <PersonProfileTabs stats={person.stats} />
+                
+                <main className="flex-1">
+                    {children}
+                </main>
             </div>
         </div>
-    )
-}
-
-
-interface ProfileTab {
-    title: string;
-    value: string;
-    count: number | null;
-}
-
-function ProfileNavigationTabs({
-    activeTab,
-    profileTabs,
-    onTabChange
-}: {
-    activeTab: string;
-    profileTabs: ProfileTab[];
-    onTabChange: (value: string) => void;
-}) {
-    return (
-        <Tabs
-            value={activeTab}
-            onValueChange={onTabChange}
-            className="w-full"
-        >
-            <TabsList
-                variant="line"
-                className="w-full justify-start overflow-x-auto gap-8 border-b border-border bg-transparent p-0 rounded-none h-auto"
-            >
-                {profileTabs.map((tab) => {
-                    const isDisabled = tab.count === 0;
-
-                    return (
-                        <TabsTrigger
-                            key={tab.value}
-                            value={tab.value}
-                            disabled={isDisabled}
-                            className="flex-none flex items-center gap-2 py-3 border-b-2 border-transparent text-sm text-muted-foreground rounded-none shadow-none data-[state=active]:border-b-blue-500 data-[state=active]:text-blue-500 data-[state=active]:shadow-none hover:text-blue-500! disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                        >
-                            {tab.title}
-                            {tab.count !== null && (
-                                <span className="bg-slate-100 text-slate-600 py-0.5 px-2 rounded-full text-[10px] font-bold shadow-xs">
-                                    {tab.count}
-                                </span>
-                            )}
-                        </TabsTrigger>
-                    )
-                })}
-            </TabsList>
-        </Tabs>
-    )
-}
-
-interface PersonSidebarProps {
-    person: PersonProfile
-}
-
-function PersonSidebar({ person }: PersonSidebarProps) {
-    const pathname = usePathname();
-
-    // Dividiamo l'URL in segmenti. Es: "/it/persons/123/mario" -> ['it', 'persons', '123', 'mario']
-    const segments = pathname.split('/').filter(Boolean);
-
-    // Troviamo a che posizione sta la parola "persons"
-    const personsIndex = segments.indexOf('persons');
-
-    // L'Overview si ha quando l'URL finisce esattamente con lo slug (ovvero 3 pezzi: persons -> id -> slug)
-    // Se c'è un pezzo in più (es: kennels), la lunghezza sarà maggiore.
-    const isOverviewPage = segments.length === personsIndex + 3;
-
-    return (
-        <aside className="space-y-6">
-            {/* La Profile Info Card c'è sempre, fa da ancoraggio visivo */}
-            <ProfileInfoCard person={person} />
-            <UserLinkedCard person={person} />
-            <EntryMetadataCard person={person} />
-
-
-        </aside>
-    )
+    );
 }

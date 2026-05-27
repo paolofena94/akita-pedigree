@@ -15,6 +15,7 @@ import { loginAction, signUpAction } from '@/actions/auth'
 import { FormInputField } from '@/components/web/shared/form-input-field'
 import { FormCheckboxField } from '@/components/web/shared/form-checkbox-field'
 import { AuthSuccessDialog } from './auth-success-dialog'
+import { useSearchParams } from 'next/navigation'
 
 
 interface AuthFormProps {
@@ -23,10 +24,13 @@ interface AuthFormProps {
 
 export default function AuthForm({ mode }: AuthFormProps) {
     const supabase = createClient()
+    const searchParams = useSearchParams()
     const isSignUp = mode === 'register'
     
     const [loading, setLoading] = useState(false)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
+    
+    const nextUrl = searchParams.get('next') || '/'
     
     const schema = isSignUp ? registerSchema : loginSchema
 
@@ -43,7 +47,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         setLoading(true)
         await supabase.auth.signInWithOAuth({
             provider,
-            options: { redirectTo: `${window.location.origin}/auth/callback` }
+            options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl)}` }
         })
     }
 

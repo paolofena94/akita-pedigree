@@ -1,24 +1,26 @@
 import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { BrandLogo } from "../shared/brand-logo";
+import { CurrentYear } from "./current-year";
+import { Suspense } from "react";
 
 export function Footer() {
   return (
     <footer className="w-full border-t border-border bg-white">
 
       <h2 id="footer-heading" className="sr-only">Footer navigation</h2>
-      
+
       <div className="flex flex-col md:flex-row flex-wrap justify-between gap-10 mx-auto max-w-7xl px-8 py-12">
-          
+
         <div className="flex flex-col gap-4 max-w-xs">
           <BrandLogo />
           <p className="text-sm text-muted-foreground leading-relaxed">
             The global database for Akita Inu pedigrees. Discover bloodlines, health clearances, and connect with breeders worldwide.
           </p>
         </div>
-        
+
         <div className="flex flex-wrap gap-12 sm:gap-16">
-          
+
           {/* Colonna 1: Esplora */}
           <nav aria-label="Discover links" className="flex flex-col items-start gap-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">Discover</h3>
@@ -74,20 +76,19 @@ export function Footer() {
         </div>
 
       </div>
-      
+
       {/* Barra inferiore */}
       <div className="border-t border-slate-200 bg-slate-50/50">
         <div className="mx-auto max-w-7xl px-8 py-2 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
           <p>
-            © {new Date().getFullYear()} Akita Pedigree. All rights reserved.
-          </p>
-          
+            © <Suspense fallback={<span className="inline-block w-[4ch]"></span>}><CurrentYear /></Suspense> Akita Pedigree. All rights reserved.          </p>
+
           <p className="mt-2 md:mt-0">
             Designed by{" "}
-            <a 
-              href="https://iltuolink.com" 
-              target="_blank" 
-              rel="noreferrer" 
+            <a
+              href="https://iltuolink.com"
+              target="_blank"
+              rel="noreferrer"
               className="font-medium text-slate-700 transition-colors hover:text-primary hover:underline underline-offset-4"
             >
               Paolo Fenaroli

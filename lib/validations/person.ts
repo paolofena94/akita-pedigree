@@ -1,24 +1,18 @@
 import { z } from "zod";
+import { EntityMediaSchema } from "./media";
 
 // ==========================================
-// REGEX CONDIVISE
+// REGEX E SCHEMI CONDIVISI
 // ==========================================
-// Permette: Lettere (maiuscole/minuscole), spazi, punti, trattini e apostrofi.
-// Questa costante può essere esportata se vuoi usarla altrove, 
-// ma di solito rimane "privata" in questo file.
 export const nameRegex = /^[a-zA-Z\s.\-']+$/;
 
-// ==========================================
-// SCHEMA PRINCIPALE (Aggiunta Persona)
-// ==========================================
-export const addPersonSchema = z.object({
+// 🌟 I CAMPI COMUNI: Regole ferree definite una volta sola
+const basePersonFields = {
   first_name: z.string()
     .trim()
     .max(100, "First name cannot exceed 100 characters")
-    // Se la stringa NON è vuota, controlliamo che rispetti la Regex.
-    // Usiamo .refine al posto di .regex perché .regex fallirebbe sulle stringhe vuote.
     .refine(val => val === '' || nameRegex.test(val), {
-      message: "First name contains invalid characters (only letters, spaces, ., -, ' allowed)"
+      message: "First name contains invalid characters"
     })
     .optional(),
 
@@ -26,52 +20,108 @@ export const addPersonSchema = z.object({
     .trim()
     .min(2, "Last name must be at least 2 characters")
     .max(100, "Last name cannot exceed 100 characters")
-    // Essendo obbligatorio, qui possiamo usare direttamente .regex()
-    .regex(nameRegex, "Last name contains invalid characters (only letters, spaces, ., -, ' allowed)"),
+    .regex(nameRegex, "Last name contains invalid characters"),
 
   country: z.string()
     .trim()
+    .toUpperCase()
     .length(2, "Please select a valid country")
-    .toUpperCase(),
+    .regex(/^[A-Z]{2}$/, "Invalid country code"),
 
   state: z.string()
     .trim()
-    .max(100, "State/Region cannot exceed 100 characters")
-    // Se lo stato non è una nazione fissa ma un testo libero inserito dall'utente,
-    // è buona pratica proteggere anche questo con la stessa regex dei nomi.
+    .max(100, "State/Province cannot exceed 100 characters")
     .refine(val => val === '' || nameRegex.test(val), {
-        message: "State contains invalid characters"
+      message: "State contains invalid characters"
     })
     .optional(),
 
-  website_url: z.string()
-    .trim()
-    .refine(val => val === '' || z.string().url().safeParse(val).success, {
-      message: "Please enter a valid URL (e.g. https://...)"
-    })
-    .refine(val => val.length <= 2048, {
-      message: "URL is too long"
-    })
-    .optional(),
+  website_url: z.union([
+    z.literal(""),
+    z.url("Please enter a valid URL (e.g. https://...)").max(2048)
+  ]).optional(),
 
+  // 🌟 SPOSTATO QUI: Ora le note sono incluse in tutti i form
   notes: z.string()
     .trim()
     .max(200, "Notes cannot exceed 200 characters")
-    // Le note sono testo libero, quindi NON mettiamo la regex dei nomi qui,
-    // altrimenti gli utenti non potrebbero usare virgole, numeri o punti interrogativi!
     .optional(),
+};
+
+// ==========================================
+// SCHEMA: AGGIUNTA PERSONA
+// ==========================================
+export const addPersonSchema = z.object({
+  ...basePersonFields,
 });
 
 export type AddPersonInput = z.infer<typeof addPersonSchema>;
 
 
 // ==========================================
-// SCHEMA RICERCA DUPLICATI
+// SCHEMA: RICERCA DUPLICATI
 // ==========================================
 export const duplicateSearchSchema = addPersonSchema.pick({
-    first_name: true,
-    last_name: true,
-    country: true
+  first_name: true,
+  last_name: true,
+  country: true
 });
 
 export type DuplicateSearchInput = z.infer<typeof duplicateSearchSchema>;
+
+
+// ==========================================
+// SCHEMA: MODIFICA PERSONA (EditEntitySheet)
+// ==========================================
+const claimedOnlyFields = {
+  city: z.string()
+    .trim()
+    .max(100)
+    .optional(),
+
+  address_street: z.string()
+    .trim()
+    .max(150)
+    .optional(),
+
+  postal_code: z.string()
+    .trim()
+    .max(20)
+    .optional(),
+
+  bio: z.string()
+    .trim()
+    .max(500, "Biography cannot exceed 500 characters").optional(),
+
+  email: z.union([
+    z.literal(""),
+    z.email("Please enter a valid email address").max(255)
+  ]).optional(),
+
+  phone: z.string()
+    .trim()
+    .max(30)
+    .optional(),
+
+  media: z.array(EntityMediaSchema)
+    .default([]),
+};
+
+// 2. Schema "full" che unisce tutto
+const fullEditPersonSchema = z.object({
+  ...basePersonFields,
+  ...claimedOnlyFields,
+});
+
+// 3. Schema "limited" prendendo solo i campi base
+const limitedEditPersonSchema = z.object({
+  ...basePersonFields,
+});
+
+// 4. Factory Function per ottenere lo schema corretto
+export const getEditPersonSchema = (isClaimed: boolean) => {
+  return isClaimed ? fullEditPersonSchema : limitedEditPersonSchema;
+};
+
+// Export del tipo (utile per i componenti)
+export type PersonFormData = z.infer<typeof fullEditPersonSchema>;

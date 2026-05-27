@@ -21,22 +21,22 @@ export const akitasMenuEntries: MenuItem[] = [
     title: "Recently Added",
     href: "/akitas",
     description:
-      "Discover the newest dogs, latest updates, and recent registrations in the system",
+      "Discover the newest akitas, latest updates, and recent registrations in the system",
   },
   {
     title: "Register an Akita",
     href: "/akitas",
     description:
-      "Add a new dog to the database to help expand the worldwide lineage.",
+      "Add a new akita to the database to help expand the worldwide lineage.",
   },
 ]
 
 export const communityMenuEntries: { title: string; href: string; description: string }[] = [
   {
-    title: "People & Owners",
+    title: "Owners",
     href: "/community",
     description:
-      "Find and connect with owners, handlers, and enthusiasts in the global network.",
+      "Find and connect with owners and enthusiasts in the global network.",
   },
   {
     title: "Kennel & Breeders",
@@ -45,16 +45,16 @@ export const communityMenuEntries: { title: string; href: string; description: s
       "Discover registered Akita breeders and explore their historical litters.",
   },
   {
-    title: "Add a Profile",
+    title: "Add a Person",
     href: "/community",
     description:
       "Create a new record for an owner or breeder not yet listed in the database.",
   },
   {
-    title: "Claim your Profile",
+    title: "Claim your Person Profile",
     href: "/community",
     description:
-      "Already listed? Verify your identity to manage your profile and your dogs.",
+      "Already listed? Claim a Person to manage its profile.",
   },
 ]
 

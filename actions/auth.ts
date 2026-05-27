@@ -34,7 +34,7 @@ export async function signUpAction(data: RegisterInput) {
     return { success: true }
 }
 
-export async function loginAction(data: LoginInput) {
+export async function loginAction(data: LoginInput, redirectTo?: string) {
     const supabase = await createClient()
     
     const { error } = await supabase.auth.signInWithPassword({
@@ -46,7 +46,7 @@ export async function loginAction(data: LoginInput) {
         return { success: false, error: error.message }
     }
 
-    redirect("/")
+    redirect(redirectTo || "/")
 }
 
 export async function signOutAction() {

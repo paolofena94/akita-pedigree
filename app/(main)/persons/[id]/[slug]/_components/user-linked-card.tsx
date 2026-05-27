@@ -1,12 +1,42 @@
-import { PersonProfile } from "@/types/person";
+"use client";
+
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowUpRight, BadgeCheck, UserPlus } from "lucide-react";
+import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import Link from "next/link";
+import { ClaimPersonDialog } from "./claim-person-dialog"; // Adegua il path
 
-export function UserLinkedCard({ person }: { person: PersonProfile }) {
-    // Se c'è un username salvato, il profilo è claimato
-    const isClaimed = !!person.claimed_by;
+interface UserLinkedCardProps {
+    personId: string;
+    personPublicId: number | string;
+    personSlug: string | null;
+    username?: string | null;
+    currentUserId?: string | null;
+    currentUserHasPersonLinked: boolean;
+}
+
+export function UserLinkedCard({ 
+    personId, 
+    personPublicId, 
+    personSlug, 
+    username, 
+    currentUserId,
+    currentUserHasPersonLinked 
+}: UserLinkedCardProps) {
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const isClaimed = !!username;
+    const isLoggedIn = !!currentUserId;
+
+    if (!isClaimed && currentUserHasPersonLinked) {
+        return null;
+    }
+
+    const handleRequireLogin = () => {
+        router.push(`/login?next=${encodeURIComponent(pathname)}`);
+    };
 
     return (
         <Card className="rounded-3xl border-none shadow-sm overflow-hidden">
@@ -19,19 +49,17 @@ export function UserLinkedCard({ person }: { person: PersonProfile }) {
                         </div>
                         <div className="min-w-0">
                             <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Claimed by</p>
-                            <p className="text-sm text-slate-700 font-bold truncate">@{person.claimed_by}</p>
+                            <p className="text-sm text-slate-700 font-bold truncate">@{username}</p>
                         </div>
                     </div>
 
-                    {/* Pulsante per visitare il profilo utente */}
                     <Button
                         asChild
                         variant="outline"
                         size="sm"
                         className="rounded-full bg-white border-emerald-200 text-emerald-700 hover:bg-emerald-100 shrink-0 ml-2"
                     >
-                        {/* L'uso di Link garantisce prefetching automatico nel viewport e client-side routing */}
-                        <Link href={`/users/${encodeURIComponent(person.claimed_by ?? '')}`}>
+                        <Link href={`/users/${encodeURIComponent(username)}`}>
                             View User <ArrowUpRight className="h-4 w-4 ml-1" />
                         </Link>
                     </Button>
@@ -44,12 +72,16 @@ export function UserLinkedCard({ person }: { person: PersonProfile }) {
                         <p className="text-xs text-muted-foreground mt-0.5">Claim this profile to manage its content.</p>
                     </div>
 
-                    <Button size="sm" className="rounded-full shadow-sm w-full sm:w-auto border-0 bg-red-400 hover:bg-red-500 gap-2 cursor-pointer shrink-0">
-                        <UserPlus className="w-4 h-4" />
-                        Claim Profile
-                    </Button>
+                    {/* 🌟 Ecco il nostro componente pulito e incapsulato! */}
+                    <ClaimPersonDialog 
+                        personId={personId}
+                        personPublicId={personPublicId}
+                        personSlug={personSlug}
+                        isLoggedIn={isLoggedIn}
+                        onRequireLogin={handleRequireLogin}
+                    />
                 </div>
             )}
         </Card>
-    )
+    );
 }

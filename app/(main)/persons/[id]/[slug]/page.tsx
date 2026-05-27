@@ -1,19 +1,37 @@
-import { BiographyCard } from "./_components/biography-card"
-import { ContactCard } from "./_components/contact-card"
-import { MOCK_PERSON } from "@/__mock__/mock-person";
+// app/(main)/persons/[id]/[slug]/page.tsx
+import { getPersonData } from "@/lib/db/person";
+import { BiographyCard } from "./_components/biography-card";
+import { ContactCard } from "./_components/contact-card";
 
-export default function PersonOverviewPage() {
-  const person = MOCK_PERSON;
+interface PersonOverviewPageProps {
+  params: Promise<{ id: string }>; 
+}
+
+export default async function PersonOverviewPage({ params }: PersonOverviewPageProps) {
+  const { id } = await params;
+
+  const person = await getPersonData(id);
+
+  const contactInfo = {
+    country: person!.country,
+    address: person!.address_street,
+    postalCode: person!.postal_code,
+    city: person!.city,
+    state: person!.state,
+    websiteUrl: person!.website_url,
+    email: person!.email,
+    phone: person!.phone,
+  };
 
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 [&>*:last-child:nth-child(odd)]:lg:col-span-2">
-
-      {/* Contatti (ContactCard ha già logica interna, ma se è completamente vuota puoi condizionarla) */}
-      <ContactCard person={person} />
       
-      {person.bio && (
-        <BiographyCard bio={person.bio} />
+      <ContactCard {...contactInfo} />
+      
+      {person!.bio && (
+        <BiographyCard bio={person!.bio} />
       )}
+      
     </div>
-  )
+  );
 }

@@ -1,16 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
-import { Database, Tables } from "@/types/database.types";
-import { QueryData, SupabaseClient, User } from "@supabase/supabase-js";
-import { cacheTag } from "next/cache";
-import { cache } from "react";
-
+import { Tables } from "@/types/database.types";
+import { User } from "@supabase/supabase-js";
+import { cacheLife, cacheTag } from "next/cache";
+import { createAdminClient } from "../supabase/admin";
+import { UserData } from "@/types/users";
+import { PersonSnippet } from "@/types/person";
 
 type UserProfileSnippet = Pick<Tables<'users'>, 'username' | 'bio' | 'avatar_url'>;
 
-/**
- * Single Source of Truth per l'estrazione dello snippet utente.
- */
-export const getUserSnippet = cache(async (userId: string): Promise<UserProfileSnippet | null> => {
+
+export async function getUserSnippet(userId: string): Promise<UserProfileSnippet | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -25,38 +24,45 @@ export const getUserSnippet = cache(async (userId: string): Promise<UserProfileS
     }
 
     return data;
-});
+}
 
-/**
- * Risolutore del contesto di sessione.
- */
-export const getCurrentUserSnippet = cache(async (): Promise<{ user: User | null, profile: UserProfileSnippet | null }> => {
+
+export async function getCurrentUserSnippet(): Promise<{ 
+    user: User | null; 
+    profile: UserProfileSnippet | null;
+    hasClaimedProfile: boolean; // Il nostro nuovo flag!
+}> {
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-        return { user: null, profile: null };
+        return { user: null, profile: null, hasClaimedProfile: false };
     }
 
+    // Usiamo la tua funzione originale per recuperare lo snippet
     const profile = await getUserSnippet(user.id);
 
-    return { user, profile };
-});
+    // Facciamo una query HTTP "HEAD" ultra-leggera per vedere se ha record in "persons".
+    // Zero payload di rete, restituisce solo il conteggio!
+    const { count, error } = await supabase
+        .from('persons')
+        .select('id', { count: 'exact', head: true })
+        .eq('claimed_by_user_id', user.id);
 
-/* export async function isUsernameTaken(newUsername: string, currentUsername: string) {
-    const supabase = await createClient()
+    if (error) {
+        console.error('[DAL] Error checking existing claims:', error.message);
+    }
 
-    const { data } = await supabase
-        .from('users')
-        .select('user_id')
-        .eq('username', newUsername)
-        .neq('user_id', currentUsername)
-        .single()
+    const hasClaimedProfile = (count ?? 0) > 0;
 
-    // Il "!!" trasforma un oggetto in true (se esiste) o false (se è null)
-    return !!data
-} */
+    return { user, profile, hasClaimedProfile };
+}
+
+
+// ==========================================
+// Resto del codice invariato e perfetto!
+// ==========================================
 
 export async function isUsernameTaken(newUsername: string, currentUsername: string): Promise<boolean> {
     const supabase = await createClient();
@@ -78,8 +84,15 @@ export async function isUsernameTaken(newUsername: string, currentUsername: stri
     return (count ?? 0) > 0;
 }
 
-const getUserProfileQuery = (supabase: SupabaseClient<Database>, username: string) =>
-    supabase
+
+export async function getUserData(username: string): Promise<UserData | null> {
+    "use cache";
+    cacheLife('hours');
+    cacheTag(`user-${username}`);
+
+    const supabaseAdmin = createAdminClient();
+    
+    const { data, error } = await supabaseAdmin
         .from('users')
         .select(`
             user_id,
@@ -98,24 +111,35 @@ const getUserProfileQuery = (supabase: SupabaseClient<Database>, username: strin
         .eq('username', username)
         .maybeSingle();
 
-// TypeScript ora dedurrà un oggetto completo e i relativi array relazionali
-export type UserProfilePageData = QueryData<ReturnType<typeof getUserProfileQuery>>;
-
-export async function getUserProfilePageData(username: string) {
-    // Efficienza: Caching persistente dell'output della funzione (Next.js 16)
-    "use cache";
-    
-    // Affidabilità: Assegnazione di un tag univoco per invalidazione mirata
-    cacheTag(`user-${username}`);
-
-    const supabase = await createClient();
-    const query = getUserProfileQuery(supabase, username);
-    const { data, error } = await query;
-
+    // 1. Gestione Pulita: Errore del Database
     if (error) {
-        console.error('[DAL] Error fetching user profile page data:', error.message);
+        console.error('[DAL] Error fetching user profile data:', error.message);
         return null;
     }
 
-    return data as UserProfilePageData;
+    // 2. Gestione Pulita: Utente non trovato (il payload 'data' è vuoto)
+    if (!data) {
+        return null;
+    }
+
+    const rawPerson = data.persons ?? null;
+
+    const linkedPerson: PersonSnippet | null = rawPerson ? {
+        id: rawPerson.id,                 
+        public_id: rawPerson.public_id,   
+        first_name: rawPerson.first_name ?? "", 
+        last_name: rawPerson.last_name,
+        slug: rawPerson.slug
+    } : null;
+
+    const userProfile: UserData = {
+        user_id: data.user_id,
+        username: data.username,
+        avatar_url: data.avatar_url,
+        bio: data.bio,
+        created_at: data.created_at, // Se è null passa liscio alla UI
+        linkedPerson: linkedPerson
+    };
+
+    return userProfile;
 }

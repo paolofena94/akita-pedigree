@@ -44,7 +44,7 @@ export function UserButton({ username, avatarUrl, onSignOut }: UserButtonProps) 
             </AvatarFallback>
           </Avatar>
 
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-sm font-semibold text-foreground hidden sm:block">
             {username}
           </span>
 

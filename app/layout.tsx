@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/web/layout/navbar";
-import { Footer } from "@/components/web/layout/footer";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -12,6 +10,7 @@ const nunito = Nunito({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false,
 });
 
 export const metadata: Metadata = {

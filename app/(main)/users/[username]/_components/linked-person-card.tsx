@@ -2,20 +2,11 @@ import Link from "next/link";
 import { BadgeCheck, ShieldQuestion, ArrowUpRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PersonSnippet } from "@/types/person";
 
-/**
- * Interfaccia per i dati della persona collegata.
- * Segue la struttura snake_case proveniente dal layer database/mock.
- */
-interface LinkedPerson {
-  id: string;
-  slug: string;
-  first_name: string;
-  last_name: string;
-}
 
 interface LinkedPersonCardProps {
-  person?: LinkedPerson | null;
+  person?: PersonSnippet | null;
 }
 
 export function LinkedPersonCard({ person }: LinkedPersonCardProps) {
@@ -50,7 +41,7 @@ export function LinkedPersonCard({ person }: LinkedPersonCardProps) {
                 Utilizzo di asChild per delegare il rendering al componente Link di Next.js.
                 Ottimizza il prefetching lato client nell'App Router.
             */}
-            <Link href={`/persons/${person.id}/${person.slug}`}>
+            <Link href={`/persons/${person.public_id}/${person.slug}`}>
               View <ArrowUpRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>

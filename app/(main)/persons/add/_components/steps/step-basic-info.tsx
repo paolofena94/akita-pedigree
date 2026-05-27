@@ -1,7 +1,7 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Field, FieldLabel, FieldError } from '@/components/ui/field'
-import { CountryAutocomplete } from '@/components/web/shared/country-form'
+import { CountrySelector } from '@/components/web/shared/country-form'
 
 export function StepBasicInfo({ disabled }: { disabled: boolean }) {
     const { control } = useFormContext();
@@ -36,7 +36,7 @@ export function StepBasicInfo({ disabled }: { disabled: boolean }) {
                         <div className="flex justify-between items-baseline mb-1.5">
                             <FieldLabel htmlFor={field.name} className="mb-0">Country <span className="text-destructive">*</span></FieldLabel>
                         </div>
-                        <CountryAutocomplete value={field.value} onChange={field.onChange} disabled={disabled} invalid={fieldState.invalid} />
+                        <CountrySelector value={field.value} onChange={field.onChange} disabled={disabled} invalid={fieldState.invalid} />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                     </Field>
                 )} />

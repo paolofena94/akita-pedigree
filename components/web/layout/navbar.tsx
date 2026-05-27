@@ -13,7 +13,7 @@ import { signOutAction } from "@/actions/auth"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense } from "react"
 
-export async function Navbar() {
+export function Navbar() {
 
     return (
         <nav aria-label="Main" className="sticky top-0 z-50 w-full border-b bg-white">

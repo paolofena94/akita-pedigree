@@ -11,17 +11,14 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!error) {
-      const redirectUrl = request.nextUrl.clone()
-      redirectUrl.pathname = next
-      redirectUrl.search = ''
-      
-      return NextResponse.redirect(redirectUrl)
+      // Gestisce in automatico percorsi relativi, 
+      // percorsi assoluti e query string annidate in "next"!
+      return NextResponse.redirect(new URL(next, request.url))
     }
   }
 
-  const errorUrl = request.nextUrl.clone()
-  errorUrl.pathname = '/login'
-  errorUrl.search = '?error=auth-failed'
+  const errorUrl = new URL('/login', request.url)
+  errorUrl.searchParams.set('error', 'auth-failed')
   
   return NextResponse.redirect(errorUrl)
 }

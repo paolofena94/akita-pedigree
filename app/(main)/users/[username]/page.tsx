@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { UserProfileCard } from "./_components/user-profile-card";
 import { LinkedPersonCard } from "./_components/linked-person-card";
 import { ActivityBoard } from "./_components/activity-board";
-import { getUserProfilePageData } from "@/lib/db/user";
+import { getCurrentUserSnippet, getUserData } from "@/lib/db/user";
 
 interface UserPageProps {
   params: Promise<{ username: string }>;
@@ -16,28 +16,23 @@ export default async function UserProfilePage({ params, searchParams }: UserPage
   ]);
 
   const decodedUsername = decodeURIComponent(username);
-  const user = await getUserProfilePageData(decodedUsername);
+  const [user, currentUserData] = await Promise.all([
+    getUserData(decodedUsername),
+    getCurrentUserSnippet()
+  ]);
 
   if (!user) {
     notFound();
   }
 
-  // Affidabilità: Gestione sicura dell'array e sanitizzazione del DTO per la UI.
-  // Mappa il nullable 'first_name' verso una stringa vuota per soddisfare l'interfaccia.
-  const rawPerson = user.persons && user.persons.length > 0 ? user.persons[0] : null;
-  const linkedPerson = rawPerson 
-    ? {
-        ...rawPerson,
-        first_name: rawPerson.first_name ?? "", // Fallback a stringa
-      }
-    : null;
+  const currentUser = currentUserData.user;
+  const currentUserId = currentUser?.id;
 
-  // Affidabilità: Fallback sicuro in caso di record sprovvisto di timestamp
-  const joinedDate = user.created_at 
+  const joinedDate = user.created_at
     ? new Date(user.created_at).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      })
+      month: "long",
+      year: "numeric",
+    })
     : "Unknown";
 
   return (
@@ -46,12 +41,14 @@ export default async function UserProfilePage({ params, searchParams }: UserPage
         <div className="lg:col-span-1 space-y-6">
           <UserProfileCard
             username={user.username}
+            userId={user.user_id}         // Passiamo l'ID del profilo visualizzato
+            currentUserId={currentUserId} // Passiamo l'ID del viewer
             avatarUrl={user.avatar_url}
             joinedDate={joinedDate}
             bio={user.bio}
           />
 
-          <LinkedPersonCard person={linkedPerson} />
+          <LinkedPersonCard person={user.linkedPerson} />
         </div>
 
         <div className="lg:col-span-2">

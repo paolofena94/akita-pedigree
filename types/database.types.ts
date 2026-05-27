@@ -14,48 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      audit_logs: {
-        Row: {
-          action: string
-          created_at: string | null
-          id: string
-          new_data: Json | null
-          old_data: Json | null
-          record_id: string
-          table_name: string
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          created_at?: string | null
-          id?: string
-          new_data?: Json | null
-          old_data?: Json | null
-          record_id: string
-          table_name: string
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          created_at?: string | null
-          id?: string
-          new_data?: Json | null
-          old_data?: Json | null
-          record_id?: string
-          table_name?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audit_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
-      dogs: {
+      akitas: {
         Row: {
           breeder_id: string | null
           call_name: string | null
@@ -149,7 +108,7 @@ export type Database = {
             foreignKeyName: "dogs_dam_id_fkey"
             columns: ["dam_id"]
             isOneToOne: false
-            referencedRelation: "dogs"
+            referencedRelation: "akitas"
             referencedColumns: ["id"]
           },
           {
@@ -170,8 +129,49 @@ export type Database = {
             foreignKeyName: "dogs_sire_id_fkey"
             columns: ["sire_id"]
             isOneToOne: false
-            referencedRelation: "dogs"
+            referencedRelation: "akitas"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          new_data: Json | null
+          old_data: Json | null
+          record_id: string
+          table_name: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id: string
+          table_name: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string
+          table_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -228,6 +228,7 @@ export type Database = {
           id: string
           media: Json | null
           name: string
+          notes: string | null
           phone: string | null
           postal_code: string | null
           public_id: number
@@ -246,6 +247,7 @@ export type Database = {
           id?: string
           media?: Json | null
           name: string
+          notes?: string | null
           phone?: string | null
           postal_code?: string | null
           public_id?: number
@@ -264,6 +266,7 @@ export type Database = {
           id?: string
           media?: Json | null
           name?: string
+          notes?: string | null
           phone?: string | null
           postal_code?: string | null
           public_id?: number
@@ -342,6 +345,100 @@ export type Database = {
           {
             foreignKeyName: "persons_claimed_by_user_id_fkey"
             columns: ["claimed_by_user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          admin_notes: string | null
+          akita_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          kennel_id: string | null
+          metadata: Json | null
+          person_id: string | null
+          reason: Database["public"]["Enums"]["report_reason"]
+          reported_user_id: string | null
+          reporter_id: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          updated_at: string | null
+          violating_user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          akita_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          kennel_id?: string | null
+          metadata?: Json | null
+          person_id?: string | null
+          reason: Database["public"]["Enums"]["report_reason"]
+          reported_user_id?: string | null
+          reporter_id?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string | null
+          violating_user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          akita_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          kennel_id?: string | null
+          metadata?: Json | null
+          person_id?: string | null
+          reason?: Database["public"]["Enums"]["report_reason"]
+          reported_user_id?: string | null
+          reporter_id?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          updated_at?: string | null
+          violating_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_akita_id_fkey"
+            columns: ["akita_id"]
+            isOneToOne: false
+            referencedRelation: "akitas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_kennel_id_fkey"
+            columns: ["kennel_id"]
+            isOneToOne: false
+            referencedRelation: "kennels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_person_id_fkey"
+            columns: ["person_id"]
+            isOneToOne: false
+            referencedRelation: "persons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_reported_user_id_fkey"
+            columns: ["reported_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "reports_violating_user_id_fkey"
+            columns: ["violating_user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["user_id"]
@@ -386,7 +483,18 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      report_reason:
+        | "HARASSMENT"
+        | "INAPPROPRIATE_CONTENT"
+        | "INACCURATE_INFORMATION"
+        | "DUPLICATE_ENTRY"
+        | "SPAM"
+        | "IMPERSONATION"
+        | "COPYRIGHT_VIOLATION"
+        | "DELETION_REQUEST"
+        | "OTHER"
+        | "OWNERSHIP_DISPUTE"
+      report_status: "PENDING" | "RESOLVED_ACCEPTED" | "RESOLVED_REJECTED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -513,6 +621,20 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      report_reason: [
+        "HARASSMENT",
+        "INAPPROPRIATE_CONTENT",
+        "INACCURATE_INFORMATION",
+        "DUPLICATE_ENTRY",
+        "SPAM",
+        "IMPERSONATION",
+        "COPYRIGHT_VIOLATION",
+        "DELETION_REQUEST",
+        "OTHER",
+        "OWNERSHIP_DISPUTE",
+      ],
+      report_status: ["PENDING", "RESOLVED_ACCEPTED", "RESOLVED_REJECTED"],
+    },
   },
 } as const
